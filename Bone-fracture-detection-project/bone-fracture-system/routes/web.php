@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PredictionController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +21,5 @@ Route::get('/', function () {
 });
 
 Route::post('/predict', [PredictionController::class, 'predict']);
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
