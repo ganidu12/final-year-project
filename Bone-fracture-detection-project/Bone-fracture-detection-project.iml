@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/app" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/tests/Feature" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/bone-fracture-system/tests/Unit" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/brick/math" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/carbonphp/carbon-doctrine-types" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/dflydev/dot-access-data" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/doctrine/inflector" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/dragonmantank/cron-expression" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/egulias/email-validator" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/fakerphp/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/filp/whoops" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/fruitcake/php-cors" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/graham-campbell/result-type" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/guzzlehttp/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/guzzlehttp/uri-template" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/hamcrest/hamcrest-php" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/intervention/gif" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/intervention/image-laravel" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/pint" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/prompts" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/sail" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/sanctum" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/serializable-closure" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/laravel/tinker" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/league/commonmark" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/league/config" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/league/flysystem" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/league/flysystem-local" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/league/mime-type-detection" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/mockery/mockery" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/myclabs/deep-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nesbot/carbon" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nette/schema" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nette/utils" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nunomaduro/collision" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/nunomaduro/termwind" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phar-io/manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phar-io/version" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpoption/phpoption" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/php-code-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/php-file-iterator" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/php-invoker" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/php-text-template" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psr/simple-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/psy/psysh" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/ralouphie/getallheaders" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/ramsey/collection" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/ramsey/uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/cli-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/code-unit" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/code-unit-reverse-lookup" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/comparator" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/complexity" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/environment" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/global-state" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/lines-of-code" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/object-enumerator" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/object-reflector" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/recursion-context" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/type" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/spatie/backtrace" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/spatie/error-solutions" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/spatie/flare-client-php" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/spatie/ignition" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/spatie/laravel-ignition" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/css-selector" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/deprecation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/error-handler" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/event-dispatcher-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/http-foundation" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/http-kernel" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/mime" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-intl-grapheme" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-intl-idn" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-intl-normalizer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-php83" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/polyfill-uuid" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/routing" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/string" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/translation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/symfony/yaml" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/theseer/tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/tijsverkoyen/css-to-inline-styles" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/webmozart/assert" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
