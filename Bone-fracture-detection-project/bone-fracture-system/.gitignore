@@ -6,8 +6,6 @@
 /storage/*.key
 /storage/logs/*
 !/storage/logs/.gitkeep
-/storage/app/temp/*
-!/storage/app/temp/.gitkeep
 /vendor
 .env
 .env.backup
