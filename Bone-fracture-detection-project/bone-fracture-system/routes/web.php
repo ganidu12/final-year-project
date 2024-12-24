@@ -23,3 +23,9 @@ Route::get('/', function () {
 Route::post('/predict', [PredictionController::class, 'predict']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register-user', [RegisterController::class, 'register'])->name('register.submit');
+Route::post('/login-user', [LoginController::class, 'login'])->name('login.submit');
+Route::get('/home-page', function () {
+    return view('home');
+})->name('home');
+

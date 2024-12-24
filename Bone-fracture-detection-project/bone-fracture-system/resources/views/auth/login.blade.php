@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body, html {
             margin: 0;
@@ -74,15 +76,31 @@
     <!-- Right Panel with Login Form -->
     <div class="login-form">
         <h4 class="text-center">Sign In</h4>
-        <form action="{{ route('login') }}" method="POST">
+
+        <!-- Display Validation Errors (SweetAlert2) -->
+        @if ($errors->any())
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: '{{ $errors->first() }}', // Display only the first error
+                icon: 'error',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            });
+        </script>
+        @endif
+
+        <form action="{{ route('login.submit') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="Email" name="email" required>
+                <input type="email" id="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
             </div>
             <div class="form-group mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" class="form-control" placeholder="Password" name="password" required>
+                <input type="password" id="password" class="form-control" placeholder="Password" name="password">
             </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="#" class="text-decoration-none">Forgot your password?</a>
