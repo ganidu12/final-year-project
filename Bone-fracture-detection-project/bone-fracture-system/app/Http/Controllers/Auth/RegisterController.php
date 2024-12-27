@@ -48,7 +48,7 @@ class RegisterController extends Controller
             }
 
             // Otherwise, redirect to the home page with a success message
-            return redirect()->route('home')->with('success', 'Account created successfully!');
+            return redirect()->route('analyze-fracture')->with('success', 'Account created successfully!');
         } catch (ValidationException $e) {
             Log::error("Validation failed during registration.", [
                 'errors' => $e->errors()

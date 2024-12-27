@@ -38,7 +38,7 @@ class LoginController extends Controller
             // Use the LoginService to handle user authentication
             $user = $this->loginService->loginUser($validatedData);
             if ($user->isSuccessful()) {
-                return redirect()->route('home')->with('success', 'Login successful!');
+                return redirect()->route('analyze-fracture')->with('success', 'Login successful!');
             }
 
             // If authentication fails, redirect back with an error message

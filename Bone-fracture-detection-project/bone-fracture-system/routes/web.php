@@ -25,7 +25,14 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register-user', [RegisterController::class, 'register'])->name('register.submit');
 Route::post('/login-user', [LoginController::class, 'login'])->name('login.submit');
-Route::get('/home-page', function () {
-    return view('home');
-})->name('home');
+Route::get('/analyze-fracture', function () {
+    return view('analyze');
+})->name('analyze-fracture');
+Route::get('/check-history', function () {
+    return view('check-history');
+})->name('check-history');
+
+Route::get('/edit-profile', function () {
+    return view('profile');
+})->name('edit-profile');
 

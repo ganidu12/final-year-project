@@ -13,29 +13,14 @@
             background-color: #f8f9fa;
             height: 100vh;
         }
-        .navbar {
-            background-color: #007bff;
-            color: white;
+
+        /* Adjust content to accommodate sidebar and top bar */
+        .main-content {
+            margin-left: 270px;
+            margin-top: 80px; /* Space for the top bar */
+            padding: 20px;
         }
-        .navbar-brand img {
-            height: 50px;
-        }
-        .account-btn {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            border: 2px solid #007bff;
-        }
-        .account-btn:hover {
-            background-color: #f8f9fa;
-        }
+
         .upload-section,
         .visualization-section {
             background-color: white;
@@ -44,9 +29,11 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             height: 80vh;
         }
+
         .upload-section h5, .visualization-section h5 {
             margin-bottom: 20px;
         }
+
         .visualization-section {
             text-align: center;
             display: flex;
@@ -55,6 +42,7 @@
             align-items: center;
             position: relative;
         }
+
         .no-image-placeholder {
             width: 400px;
             height: 400px;
@@ -68,6 +56,7 @@
             background-color: #f8f9fa;
             margin-bottom: 10px;
         }
+
         .image-preview {
             width: 100%;
             max-width: 400px;
@@ -75,108 +64,75 @@
             border-radius: 8px;
             object-fit: contain;
         }
+
         .remove-btn {
             display: none;
             margin-top: 10px;
         }
-        /* Scanning animation */
-        .scanning-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 255, 0, 0.3);
-            animation: scan 2s infinite linear;
-            pointer-events: none;
-        }
-        @keyframes scan {
-            0% {
-                transform: translateY(-100%);
-            }
-            100% {
-                transform: translateY(100%);
-            }
-        }
-        @media (max-width: 768px) {
-            .upload-section, .visualization-section {
-                margin-bottom: 20px;
-            }
+        .loading-overlay.hidden {
+            display: none; /* Use this class to hide the overlay */
         }
     </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="{{ asset('images/bone fracture system logo.jpg') }}" alt="System Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Check History</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
-                </li>
-            </ul>
-            <a href="#" class="account-btn">A</a>
-        </div>
-    </div>
-</nav>
+<!-- Include Sidebar and Top Bar -->
+@include('components/layout')
 
 <!-- Main Content -->
-<div class="container-fluid mt-4">
-    <div class="row g-4">
-        <!-- Left Column: Upload and Add Patient Details -->
-        <div class="col-lg-6 col-md-12">
-            <div class="upload-section">
-                <h5>Upload and Add Patient Details</h5>
-                <form>
-                    <div class="mb-3">
-                        <label for="uploadImage" class="form-label">Upload Image</label>
-                        <input type="file" class="form-control" id="uploadImage" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                        <label for="patientName" class="form-label">Patient Name</label>
-                        <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="patientEmail" class="form-label">Patient Email</label>
-                        <input type="email" class="form-control" id="patientEmail" placeholder="Enter Patient Email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="patientAge" class="form-label">Patient Age</label>
-                        <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
-                    </div>
-                    <div class="mb-3">
-                        <label for="actionType" class="form-label">Select Action</label>
-                        <select class="form-select" id="actionType">
-                            <option value="classify">Classify X-Ray</option>
-                            <option value="analyze">Analyze and Locate Fracture</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Submit</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Right Column: Visualization -->
-        <div class="col-lg-6 col-md-12">
-            <div class="visualization-section">
-                <h5>Visualization</h5>
-                <div id="imagePreview" class="no-image-placeholder">
-                    No Image
+<div class="main-content">
+    <div class="container-fluid mt-4">
+        <div class="row g-4">
+            <!-- Left Column: Upload and Add Patient Details -->
+            <div class="col-lg-6 col-md-12">
+                <div class="upload-section">
+                    <h5>Analyze X-ray</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="uploadImage" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="uploadImage" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientName" class="form-label">Patient Name</label>
+                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientEmail" class="form-label">Patient Email</label>
+                            <input type="email" class="form-control" id="patientEmail" placeholder="Enter Patient Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientAge" class="form-label">Patient Age</label>
+                            <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
+                        </div>
+                        <div class="mb-3">
+                            <label for="actionType" class="form-label">Select Action</label>
+                            <select class="form-select" id="actionType">
+                                <option value="classify">Classify X-Ray</option>
+                                <option value="analyze">Analyze and Locate Fracture</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    </form>
                 </div>
-                <button id="removeImage" class="btn btn-danger remove-btn">Remove Image</button>
-                <p id="resultInfo" class="mt-3">
-                    Uploaded image and detection results will be displayed here.
-                </p>
+            </div>
+
+            <!-- Right Column: Visualization -->
+            <div class="col-lg-6 col-md-12">
+                <div class="visualization-section">
+                    <h5>Visualization</h5>
+                    <div id="imagePreview" class="no-image-placeholder">
+                        No Image
+                        <div class="loading-overlay" id="loadingOverlay">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden" >Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="removeImage" class="btn btn-danger remove-btn" style="display: none">Remove Image</button>
+                    <p id="resultInfo" class="mt-3">
+                        Uploaded image and detection results will be displayed here.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -188,9 +144,13 @@
     const imagePreview = document.getElementById('imagePreview');
     const removeImageButton = document.getElementById('removeImage');
     const submitButton = document.querySelector('button[type="submit"]');
+    const loadingOverlay = document.getElementById('loadingOverlay');
     const predictRoute = "{{ route('predict', ['type' => ':type']) }}";
     let scanningOverlay = null;
 
+    document.addEventListener('DOMContentLoaded', () => {
+        loadingOverlay.classList.add('hidden');
+    });
     // Handle image upload and preview
     uploadImageInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
@@ -198,6 +158,8 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" class="image-preview">`;
+                imagePreview.appendChild(loadingOverlay);
+                loadingOverlay.classList.add('hidden');
                 removeImageButton.style.display = 'block'; // Show remove button
             };
             reader.readAsDataURL(file);
@@ -208,6 +170,7 @@
 
     submitButton.addEventListener('click', async function (event) {
         event.preventDefault(); // Prevent default form submission
+        loadingOverlay.classList.remove('hidden'); // Show loading animation
         removeImageButton.style.display = 'none';
         const file = uploadImageInput.files[0];
         const actionType = document.getElementById('actionType').value; // Get the selected type from the dropdown
@@ -225,8 +188,6 @@
         const formData = new FormData();
         formData.append('image', file);
 
-        // Add scanning overlay
-        addScanningAnimation();
 
         try {
             await new Promise(resolve => setTimeout(resolve, 3000));
@@ -273,9 +234,8 @@
             }
         } catch (error) {
             alert(`Error: ${error.message}`);
-        } finally {
-            // Remove scanning animation
-            removeScanningAnimation();
+        }finally {
+            loadingOverlay.classList.add('hidden');
         }
     });
 
@@ -294,20 +254,6 @@
         removeImageButton.style.display = 'none'; // Hide remove button
     }
 
-    // Add scanning animation overlay
-    function addScanningAnimation() {
-        scanningOverlay = document.createElement('div');
-        scanningOverlay.className = 'scanning-overlay';
-        imagePreview.appendChild(scanningOverlay);
-    }
-
-    // Remove scanning animation overlay
-    function removeScanningAnimation() {
-        if (scanningOverlay) {
-            scanningOverlay.remove();
-            scanningOverlay = null;
-        }
-    }
 </script>
 
 </body>
