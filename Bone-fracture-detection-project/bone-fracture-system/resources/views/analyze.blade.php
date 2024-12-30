@@ -23,7 +23,7 @@
 
         .upload-section,
         .visualization-section {
-            background-color: white;
+            background-color: ghostwhite;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
