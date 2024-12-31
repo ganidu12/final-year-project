@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::post('/predict/{type}', [PredictionController::class, 'predict'])->name('predict');;
+Route::post('/predict', [PredictionController::class, 'predict'])->name('predict');;
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register-user', [RegisterController::class, 'register'])->name('register.submit');

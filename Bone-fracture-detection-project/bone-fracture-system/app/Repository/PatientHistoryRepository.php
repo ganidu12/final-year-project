@@ -13,8 +13,10 @@ class PatientHistoryRepository
         $patientHistory->id = (string) Str::uuid();
         $patientHistory->user_id = $data['user_id'];
         $patientHistory->diagnosis = $data['diagnosis'];
-        $patientHistory->fracture_size = $data['fracture_size'];
-        $patientHistory->image_url = $data['image_url'];
+        if (isset($data['fracture_size']) && isset($data['image_url'])){
+            $patientHistory->fracture_size = $data['fracture_size'];
+            $patientHistory->image_url = $data['image_url'];
+        }
         $patientHistory->doctor_id = $data['doctor_id'];
         $patientHistory->save();
         return $patientHistory;

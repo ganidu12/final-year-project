@@ -19,23 +19,25 @@ class PredictionController extends Controller
         $this->patientHistoryService = $patientHistoryService;
     }
 
-    public function predict(Request $request,$type)
+    public function predict(Request $request)
     {
         Log::info("current user". Auth::user()->email);
         try {
             $image = $request->file('image');
-            if ($type == "classify"){
-                return $this->predictionService->classification($image);
+            $classifyResponse = $this->predictionService->classification($image);
+            $responseClassifyData = json_decode($classifyResponse->getContent(), true);
+            if ($responseClassifyData['image_class'] == 'Non-Fractured'){
+                if (Auth::user()->user_type == 'doctor'){
+                    $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id);
+                }
+                return $classifyResponse;
             }else{
                 $regressionResponse = $this->predictionService->predictRegression($image);
                 $responseRegressionData = json_decode($regressionResponse->getContent(), true);
 
-                $classifyResponse = $this->predictionService->classification($image);
-                $responseClassifyData = json_decode($classifyResponse->getContent(), true);
-
                 if ($regressionResponse->isSuccessful() && $classifyResponse->isSuccessful()){
                     if (Auth::user()->user_type == 'doctor'){
-                        $this->patientHistoryService->saveDiagnosis($request,$responseRegressionData,$responseClassifyData['image_class'],Auth::user()->id);
+                        $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id,$responseRegressionData);
                     }
                     return response()->json([
                         'image_url' => $responseRegressionData['image_url'],
@@ -48,7 +50,6 @@ class PredictionController extends Controller
                     return response("An error occurred during classification and regression");
                 }
             }
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'An error occurred',

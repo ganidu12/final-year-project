@@ -16,17 +16,19 @@ class PatientHistoryService
         $this->patientHistoryRepository = $patientHistoryRepository;
         $this->userRepository = $userRepository;
     }
-    public function saveDiagnosis($request,$data,$imageClass,$doctor_id)
+    public function saveDiagnosis($request,$imageClass,$doctor_id,$data = null)
     {
         try {
             $userId = $this->userRepository->findUserByEmail($request->patientEmail)->id;
             $patientHistoryData = [
                 'user_id' =>$userId,
                 'diagnosis' => $imageClass,
-                'image_url' => $data['image_url'],
-                'doctor_id' => $doctor_id,
-                'fracture_size' => $data['diagonal_mm']
+                'doctor_id' => $doctor_id
             ];
+            if ($data) {
+                $patientHistoryData['image_url'] = $data['image_url'];
+                $patientHistoryData['fracture_size'] = $data['diagonal_mm'];
+            }
             return $this->patientHistoryRepository->createPatientHistory($patientHistoryData);
         }catch (\Exception $e){
             Log::info($e);

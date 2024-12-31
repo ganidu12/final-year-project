@@ -109,13 +109,6 @@
                             <label for="patientAge" class="form-label">Patient Age</label>
                             <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
                         </div>
-                        <div class="mb-3">
-                            <label for="actionType" class="form-label">Select Action</label>
-                            <select class="form-select" id="actionType">
-                                <option value="classify">Classify X-Ray</option>
-                                <option value="analyze">Analyze and Locate Fracture</option>
-                            </select>
-                        </div>
                         <button type="submit" id ="submit-btn" class="btn btn-primary w-100">Submit</button>
                     </form>
                 </div>
@@ -150,7 +143,7 @@
     const removeImageButton = document.getElementById('removeImage');
     const submitButton = document.querySelector('button[type="submit"]');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const predictRoute = "{{ route('predict', ['type' => ':type']) }}";
+    const predictRoute = "{{ route('predict') }}";
     let scanningOverlay = null;
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -179,17 +172,12 @@
         removeImageButton.style.display = 'none';
         const file = uploadImageInput.files[0];
         const patientEmail = document.getElementById('patientEmail').value;
-        const actionType = document.getElementById('actionType').value; // Get the selected type from the dropdown
 
         if (!file) {
             alert('Please upload an image before submitting.');
             return;
         }
 
-        if (!actionType) {
-            alert('Please select an action type from the dropdown.');
-            return;
-        }
 
         const formData = new FormData();
         formData.append('image', file);
@@ -198,12 +186,9 @@
 
         try {
             await new Promise(resolve => setTimeout(resolve, 3000));
-
-            const url = predictRoute.replace(':type', actionType);
-
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Get CSRF token
 
-            const response = await fetch(url, {
+            const response = await fetch(predictRoute, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
@@ -216,28 +201,20 @@
             }
 
             const result = await response.json();
-
-            // Clear the result info section
             document.getElementById('resultInfo').innerHTML = '';
 
-            if (actionType === 'classify') {
-                // Display classification result
+            if (result.image_class === 'Non-Fractured') {
                 document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class}
             `;
-            } else if (actionType === 'analyze') {
-                // Display analysis result
+            } else{
                 if (result.image_url) {
-                    // Update the image preview
                     imagePreview.innerHTML = `<img src="${result.image_url}" alt="Processed Image" class="image-preview">`;
                 }
-                // Display additional results
                 document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class} <br>
                 <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}
             `;
-            } else {
-                throw new Error('Unknown action type.');
             }
         } catch (error) {
             alert(`Error: ${error.message}`);
