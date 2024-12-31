@@ -178,6 +178,7 @@
         loadingOverlay.classList.remove('hidden'); // Show loading animation
         removeImageButton.style.display = 'none';
         const file = uploadImageInput.files[0];
+        const patientEmail = document.getElementById('patientEmail').value;
         const actionType = document.getElementById('actionType').value; // Get the selected type from the dropdown
 
         if (!file) {
@@ -192,6 +193,7 @@
 
         const formData = new FormData();
         formData.append('image', file);
+        formData.append('patientEmail', patientEmail);
 
 
         try {

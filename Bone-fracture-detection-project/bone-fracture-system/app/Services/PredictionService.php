@@ -78,7 +78,7 @@ class PredictionService
 
             $img->save($outputPath);
 
-            // Return the path of the saved image
+
             return response()->json([
                 'message' => 'Image processed successfully',
                 'image_url' => asset('storage/temp/' . $outputFileName),

@@ -20,7 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $user_type
  * @property string|null $remember_token
  */
-class User extends Model
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -43,10 +43,7 @@ class User extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @v
+
     protected $fillable = [
         'id',
         'name',

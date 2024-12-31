@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PatientHistoryService;
 use App\Services\PredictionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PredictionController extends Controller
 {
     protected $predictionService;
+    protected $patientHistoryService;
 
-    public function __construct(PredictionService $predictionService)
+    public function __construct(PredictionService $predictionService, PatientHistoryService $patientHistoryService)
     {
         $this->predictionService = $predictionService;
+        $this->patientHistoryService = $patientHistoryService;
     }
 
     public function predict(Request $request,$type)
     {
-        Log::info($type);
+        Log::info("current user". Auth::user()->email);
         try {
             $image = $request->file('image');
             if ($type == "classify"){
@@ -30,6 +34,9 @@ class PredictionController extends Controller
                 $responseClassifyData = json_decode($classifyResponse->getContent(), true);
 
                 if ($regressionResponse->isSuccessful() && $classifyResponse->isSuccessful()){
+                    if (Auth::user()->user_type == 'doctor'){
+                        $this->patientHistoryService->saveDiagnosis($request,$responseRegressionData,$responseClassifyData['image_class'],Auth::user()->id);
+                    }
                     return response()->json([
                         'image_url' => $responseRegressionData['image_url'],
                         'diagonal_mm'=> $responseRegressionData['diagonal_mm'],

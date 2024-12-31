@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -18,17 +19,36 @@ class LoginService
     /**
      * Register a new user after validation.
      */
-    public function loginUser($validatedData)
+//    public function loginUser($validatedData)
+//    {
+//        $user = $this->userRepository->findUserByEmail($validatedData['email']);
+//        if ($user && Hash::check($validatedData['password'], $user->password)) {
+//            return response()->json([
+//                'message' => 'Login successful.',
+//                'user' => $user,
+//            ], 200);
+//        }
+//        return response()->json([
+//            'message' => 'Invalid password.',
+//        ], 401);
+//    }
+
+    public function loginUser(array $validatedData)
     {
+        Log::info("gggggggggggggg");
         $user = $this->userRepository->findUserByEmail($validatedData['email']);
-        if ($user && Hash::check($validatedData['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Login successful.',
-                'user' => $user,
-            ], 200);
+        Log::info($user);
+        if (!Hash::check($validatedData['password'], $user->password)) {
+            Log::info("llllllllllllllll");
+            return false;
         }
-        return response()->json([
-            'message' => 'Invalid password.',
-        ], 401);
+        if (Auth::loginUsingId($user->id)) {
+            session()->regenerate();
+            Log::info("kkkkkkkkk");
+            return $user;
+        }
+
+        Log::info("jjjjjjjjjjjjjjjjjjjjjjjj");
+        return false;
     }
 }

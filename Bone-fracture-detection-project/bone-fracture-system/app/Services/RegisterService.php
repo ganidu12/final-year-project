@@ -27,7 +27,6 @@ class RegisterService
             'user_type' => $data['user_type'],
         ];
 
-        // Create the user using the repository
         return $this->userRepository->createUser($userData);
     }
 }
