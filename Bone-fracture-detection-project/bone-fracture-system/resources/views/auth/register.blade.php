@@ -21,7 +21,7 @@
         }
         .signup-image {
             flex: 2;
-            background-image: url("{{ asset('images/login-logo.jpg') }}");
+            background-image: url("{{ asset('images/sign-up-image.jpg') }}");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -40,11 +40,16 @@
             text-align: center;
         }
         .signin-link a {
-            color: #007bff;
+            color: #000; /* Black color for "Sign In" link */
             text-decoration: none;
         }
         .signin-link a:hover {
             text-decoration: underline;
+        }
+        #sign-up-btn {
+            background-color: #2f2c2c; /* Updated background color */
+            color: #fff; /* White text */
+            border: none; /* Remove border */
         }
     </style>
 </head>
@@ -90,7 +95,7 @@
                     <option value="doctor" {{ old('user_type') == 'doctor' ? 'selected' : '' }}>Doctor</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" id="sign-up-btn" class="btn btn-primary">Sign Up</button>
         </form>
 
         <!-- Already have an account? Sign In Section -->

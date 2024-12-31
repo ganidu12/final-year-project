@@ -21,7 +21,7 @@
         }
         .login-image {
             flex: 2; /* Increase the size of the left panel */
-            background-image: url("{{ asset('images/login-logo.jpg') }}");
+            background-image: url("{{ asset('images/login-image.jpg') }}");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -47,11 +47,22 @@
             text-align: center;
         }
         .signup-link a {
-            color: #007bff;
+            color: #000; /* Black color for "Sign Up" link */
             text-decoration: none;
         }
         .signup-link a:hover {
             text-decoration: underline;
+        }
+        .text-decoration-none {
+            color: #000; /* Black color for "Forgot your password?" */
+        }
+        .text-decoration-none:hover {
+            text-decoration: underline;
+        }
+        #login-btn {
+            background-color: #2f2c2c; /* Updated background color */
+            color: #fff; /* White text */
+            border: none; /* Remove border */
         }
         @media (max-width: 768px) {
             .login-container {
@@ -105,7 +116,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="#" class="text-decoration-none">Forgot your password?</a>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" id="login-btn" class="btn btn-primary">Login</button>
         </form>
 
         <!-- Signup Link -->

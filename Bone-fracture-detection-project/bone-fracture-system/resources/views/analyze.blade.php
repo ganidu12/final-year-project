@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
-            height: 100vh;
+            height: 60vh;
         }
 
         /* Adjust content to accommodate sidebar and top bar */
@@ -72,6 +72,11 @@
         .loading-overlay.hidden {
             display: none; /* Use this class to hide the overlay */
         }
+        #submit-btn {
+            background-color: #2f2c2c; /* Updated background color */
+            color: #fff; /* White text */
+            border: none; /* Remove border */
+        }
     </style>
 </head>
 <body>
@@ -111,7 +116,7 @@
                                 <option value="analyze">Analyze and Locate Fracture</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        <button type="submit" id ="submit-btn" class="btn btn-primary w-100">Submit</button>
                     </form>
                 </div>
             </div>

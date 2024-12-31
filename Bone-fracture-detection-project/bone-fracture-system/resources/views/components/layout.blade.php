@@ -8,7 +8,7 @@
     <style>
         /* Sidebar Styles */
         .sidebar {
-            background-color: #1a73e8;
+            background-color: #2f2c2c;
             height: 100vh;
             padding: 20px 0;
             position: fixed;
@@ -39,7 +39,7 @@
         }
         .sidebar .nav-link.active {
             background-color: #ffffff;
-            color: #1a73e8;
+            color: black;
             font-weight: bold;
             border: none; /* Remove borders for active state */
         }
