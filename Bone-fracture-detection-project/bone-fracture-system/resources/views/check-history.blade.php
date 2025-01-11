@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +18,14 @@
             margin-left: 270px;
             margin-top: 80px; /* Space for the top bar */
             padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px;
+                padding: 10px;
+            }
         }
 
         /* Portlet Styles */
@@ -78,13 +87,22 @@
             background-color: #1a73e8;
             color: white;
         }
-        .btn-outline-danger {
-            color: #e74c3c;
-            border-color: #e74c3c;
+
+        /* Modal Customizations */
+        .modal-dialog-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full height to ensure vertical centering */
         }
-        .btn-outline-danger:hover {
-            background-color: #e74c3c;
-            color: white;
+
+        .modal-lg {
+            max-width: 90%; /* Larger width for responsiveness */
+        }
+
+        /* Blur background when modal is active */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
         }
     </style>
 </head>
@@ -104,51 +122,145 @@
             <tr>
                 <th>Patient Name</th>
                 <th>Patient Email</th>
+                <th>Diagnosis</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
+            @if($patientHistory && $patientHistory->isNotEmpty())
+            @foreach($patientHistory as $history)
             <tr>
-                <td>John Doe</td>
-                <td>john.doe@example.com</td>
+                <td>{{ $history->user->name }}</td>
+                <td>{{ $history->user->email }}</td>
+                <td>{{ $history->diagnosis }}</td>
                 <td>
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fa fa-eye"></i> View
-                    </a>
-                    <a href="#" class="btn btn-outline-danger">
-                        <i class="fa fa-trash"></i> Delete
-                    </a>
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}">
+                    <i class="fa fa-eye"></i> View
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="openDeleteModal('{{ $history->id }}')">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+
+
                 </td>
             </tr>
+            @endforeach
+            @else
             <tr>
-                <td>Jane Smith</td>
-                <td>jane.smith@example.com</td>
-                <td>
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fa fa-eye"></i> View
-                    </a>
-                    <a href="#" class="btn btn-outline-danger">
-                        <i class="fa fa-trash"></i> Delete
-                    </a>
-                </td>
+                <td colspan="4" class="text-center">No patient history found.</td>
             </tr>
-            <tr>
-                <td>Mark Johnson</td>
-                <td>mark.johnson@example.com</td>
-                <td>
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fa fa-eye"></i> View
-                    </a>
-                    <a href="#" class="btn btn-outline-danger">
-                        <i class="fa fa-trash"></i> Delete
-                    </a>
-                </td>
-            </tr>
+            @endif
             </tbody>
         </table>
     </div>
 </div>
 
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="background-color: #ffffff; border-radius: 8px;">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: #222020; color: white; border-bottom: none;">
+                <h5 class="modal-title" id="viewModalLabel">Patient Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" style="background-color: white; color: #333;">
+                <div class="row">
+                    <!-- Left Section: Patient Details -->
+                    <div class="col-md-6">
+                        <h6 class="text-uppercase mb-3" style="color: #666;">Patient Information</h6>
+                        <p><strong>Fracture Size:</strong> <span id="modalFractureSize" style="color: #333;"></span></p>
+                        <p><strong>Additional Notes:</strong>
+                            <span style="color: #555;">Placeholder text for more details or comments regarding the patient.</span>
+                        </p>
+                    </div>
+                    <!-- Right Section: Image -->
+                    <div class="col-md-6 text-center">
+                        <h6 class="text-uppercase mb-3" style="color: #666;">Fracture Image</h6>
+                        <div class="d-flex justify-content-center">
+                            <img id="modalImage" src="" alt="Patient Image"
+                                 class="img-fluid rounded shadow"
+                                 style="max-height: 300px; background-color: #f8f8f8; padding: 8px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this patient history?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    const viewModal = document.getElementById('viewModal');
+    viewModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        const url = button.getAttribute('data-url');
+        const fractureSize = button.getAttribute('data-fracture-size');
+
+        document.getElementById('modalFractureSize').textContent = fractureSize || 'N/A';
+        document.getElementById('modalImage').src = url;
+    });
+
+    let selectedId = null; // Variable to store the ID of the record to delete
+
+    function openDeleteModal(id) {
+        selectedId = id; // Store the ID in a variable
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+        deleteModal.show(); // Show the modal
+    }
+
+    document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+        if (selectedId) {
+            $.ajax({
+                url: '/delete-history',
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: { id: selectedId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                        $(`#row-${selectedId}`).remove(); // Dynamically remove the row
+                    } else {
+                        alert(response.message || 'Failed to delete patient history.');
+                    }
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
+                    deleteModal.hide();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the patient history.');
+                }
+            });
+        }
+    });
+
+</script>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * Class PatientHistory
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string fracture_size
  * @property string|null $image_url
  * @property string $doctor_id
+ * @property Carbon|null $deleted_at
  */
 class PatientHistory extends Model
 {
@@ -31,7 +33,7 @@ class PatientHistory extends Model
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -39,11 +41,13 @@ class PatientHistory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'user_id',
         'diagnosis',
         'image_url',
         'doctor_id',
-        'fracture_size'
+        'fracture_size',
+        'deleted_at'
     ];
 
     /**

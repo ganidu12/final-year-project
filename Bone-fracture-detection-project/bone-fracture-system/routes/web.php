@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PatientHistoryController;
 use App\Http\Controllers\PredictionController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,10 +29,8 @@ Route::post('/login-user', [LoginController::class, 'login'])->name('login.submi
 Route::get('/analyze-fracture', function () {
     return view('analyze');
 })->name('analyze-fracture');
-Route::get('/check-history', function () {
-    return view('check-history');
-})->name('check-history');
-
+Route::get('/check-history',[PatientHistoryController::class, 'getHistory'])->name('getHistory');
+Route::delete('/delete-history',[PatientHistoryController::class, 'deleteHistory'])->name('deleteHistory');
 Route::get('/edit-profile', function () {
     return view('profile');
 })->name('edit-profile');

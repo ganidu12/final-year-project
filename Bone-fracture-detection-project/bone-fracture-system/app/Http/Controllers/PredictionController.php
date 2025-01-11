@@ -27,9 +27,6 @@ class PredictionController extends Controller
             $classifyResponse = $this->predictionService->classification($image);
             $responseClassifyData = json_decode($classifyResponse->getContent(), true);
             if ($responseClassifyData['image_class'] == 'Non-Fractured'){
-                if (Auth::user()->user_type == 'doctor'){
-                    $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id);
-                }
                 return $classifyResponse;
             }else{
                 $regressionResponse = $this->predictionService->predictRegression($image);

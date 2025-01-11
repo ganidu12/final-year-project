@@ -76,7 +76,7 @@
     <div class="text-container">
         <h1>Welcome to <span>Bone Scope</span></h1>
         <p>Leverage state-of-the-art Machine Learning to detect bone fractures accurately and efficiently.</p><p> Upload your X-ray scans and get results in seconds.</p>
-        <a href="/analyze-fracture" class="btn">Get Started >></a>
+        <a href="/login" class="btn">Get Started >></a>
     </div>
 
     <!-- Image Section -->

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar with Full-Width Links</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Sidebar Styles */
         .sidebar {
@@ -106,12 +107,26 @@
 </head>
 <body>
 <!-- Sidebar -->
-<div class="sidebar">
-    <div class="logo">
-        <img src="{{ asset('images/bone fracture system logo.jpg') }}" alt="System Logo">
+<div class="sidebar d-flex flex-column justify-content-between">
+    <div>
+        <div class="logo">
+            <img src="{{ asset('images/bone fracture system logo.jpg') }}" alt="System Logo">
+        </div>
+        <a href="/analyze-fracture" class="nav-link @if(request()->is('analyze-fracture')) active @endif">
+            <i class="fas fa-x-ray me-2"></i> <!-- Icon for Analyze X-ray -->
+            Analyze X-ray
+        </a>
+        <a href="/check-history" class="nav-link @if(request()->is('check-history')) active @endif">
+            <i class="fas fa-history me-2"></i> <!-- Icon for Check History -->
+            Check History
+        </a>
     </div>
-    <a href="/analyze-fracture" class="nav-link @if(request()->is('analyze-fracture')) active @endif">Analyze X-ray</a>
-    <a href="/check-history" class="nav-link @if(request()->is('check-history')) active @endif">Check History</a>
+    <div>
+        <a href="#" class="nav-link">
+            <i class="fas fa-sign-out-alt me-2"></i> <!-- Icon for Logout -->
+            Logout
+        </a>
+    </div>
 </div>
 
 <!-- Top Bar -->

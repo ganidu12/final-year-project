@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('diagnosis');
             $table->string('fracture_size')->nullable();
             $table->string('image_url')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
