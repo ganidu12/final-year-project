@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property string fracture_size
  * @property string|null $image_url
  * @property string $doctor_id
+ * @property string $feedback
  * @property Carbon|null $deleted_at
  */
 class PatientHistory extends Model
@@ -47,6 +48,7 @@ class PatientHistory extends Model
         'image_url',
         'doctor_id',
         'fracture_size',
+        'feedback',
         'deleted_at'
     ];
 

@@ -48,6 +48,7 @@ class PredictionController extends Controller
                 }
             }
         } catch (\Exception $e) {
+            Log::error($e);
             return response()->json([
                 'error' => 'An error occurred',
                 'message' => $e->getMessage(),

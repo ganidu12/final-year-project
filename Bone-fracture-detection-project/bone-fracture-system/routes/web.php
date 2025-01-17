@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PatientHistoryController;
 use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,8 +31,8 @@ Route::get('/analyze-fracture', function () {
     return view('analyze');
 })->name('analyze-fracture');
 Route::get('/check-history',[PatientHistoryController::class, 'getHistory'])->name('getHistory');
+Route::put('/feedback',[PatientHistoryController::class, 'addFeedback'])->name('addFeedback');
 Route::delete('/delete-history',[PatientHistoryController::class, 'deleteHistory'])->name('deleteHistory');
-Route::get('/edit-profile', function () {
-    return view('profile');
-})->name('edit-profile');
+Route::post('/update-profile', [UserController::class, 'updateProfile'])->name('updateProfile');
+Route::get('/edit-profile',[UserController::class, 'profileIndex'])->name('edit-profile');
 

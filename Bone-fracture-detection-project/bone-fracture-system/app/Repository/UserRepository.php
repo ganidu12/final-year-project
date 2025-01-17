@@ -29,4 +29,21 @@ class UserRepository
     {
         return User::where('email', $email)->first();
     }
+
+
+    public function updateUser($userId, $data)
+    {
+
+        $user = User::findOrFail($userId);
+        $user->update([
+            'name' => $data['name'] ?? $user->name,
+            'email' => $data['email'] ?? $user->email,
+            'phone' => $data['phone'] ?? null,
+            'address' => $data['address'] ??null,
+            'profile_img' => $data['profile_img'] ?? $user->profile_img,
+        ]);
+        $user->save();
+        return $user;
+    }
+
 }

@@ -50,4 +50,10 @@ class PatientHistoryService
             throw new RuntimeException($e->getMessage());
         }
     }
+
+    public function addFeedback($feedback)
+    {
+        $doctor_id = Auth::user()->id;
+        return $this->patientHistoryRepository->addFeedback($doctor_id,$feedback);
+    }
 }

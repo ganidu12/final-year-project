@@ -132,7 +132,7 @@
 <!-- Top Bar -->
 <div class="top-bar">
     <a href="/edit-profile" class="account-btn">
-        <img src="{{ asset('images/dummy-profile-pic.jpg') }}" alt="Profile picture">
+        <img src="{{ auth()->user()->profile_img ? asset('storage/' . auth()->user()->profile_img) : asset('images/dummy-profile-pic.jpg') }}" alt="Profile picture">
     </a>
 </div>
 

@@ -123,6 +123,7 @@
                 <th>Patient Name</th>
                 <th>Patient Email</th>
                 <th>Diagnosis</th>
+                <th>Feedback</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -133,6 +134,11 @@
                 <td>{{ $history->user->name }}</td>
                 <td>{{ $history->user->email }}</td>
                 <td>{{ $history->diagnosis }}</td>
+                @if($history->feedback)
+                <td>{{ $history->feedback }}</td>
+                @else
+                <td style="text-indent: 40px;">--</td>
+                @endif
                 <td>
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}">
                     <i class="fa fa-eye"></i> View

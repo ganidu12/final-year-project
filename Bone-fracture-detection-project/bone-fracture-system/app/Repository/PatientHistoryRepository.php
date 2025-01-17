@@ -33,4 +33,15 @@ class PatientHistoryRepository
         $deletedPatientHistory = PatientHistory::where('id',$id)->update(['deleted_at' => Carbon::now()]);
         return $deletedPatientHistory;
     }
+
+    public function addFeedback($doctor_id, $feedback)
+    {
+        $updatedPatientHistory = PatientHistory::where('doctor_id', $doctor_id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $updatedPatientHistory->update(['feedback' => $feedback]);
+        return $updatedPatientHistory;
+    }
+
 }

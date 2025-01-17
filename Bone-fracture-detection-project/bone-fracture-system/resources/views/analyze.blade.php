@@ -132,6 +132,23 @@
                     </p>
                 </div>
             </div>
+
+            <div class="row g-4 mt-4" id="additionalInfoRow" style="display: none;">
+                <div class="col-12">
+                    <div class="upload-section" style="height: auto; padding: 20px;">
+                        <h5>Add Feedback</h5>
+                        <form>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="fractureDetails" rows="3" placeholder="Enter details about the fracture"></textarea>
+                            </div>
+                            <button id="submitAdditionalInfo" class="btn w-100" style="background-color: #2f2c2c; color: #fff;">Submit Feedback</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 </div>
@@ -143,6 +160,8 @@
     const removeImageButton = document.getElementById('removeImage');
     const submitButton = document.querySelector('button[type="submit"]');
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const additionalInfoRow = document.getElementById('additionalInfoRow');
+    const submitAdditionalInfoButton = document.getElementById('submitAdditionalInfo');
     const predictRoute = "{{ route('predict') }}";
     let scanningOverlay = null;
 
@@ -215,6 +234,7 @@
                 <strong>Diagnosis Result:</strong> ${result.image_class} <br>
                 <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}
             `;
+                additionalInfoRow.style.display = 'block';
             }
         } catch (error) {
             alert(`Error: ${error.message}`);
@@ -223,7 +243,52 @@
         }
     });
 
+    submitAdditionalInfoButton.addEventListener('click', async function (event) {
+        event.preventDefault();
+        const feedback = document.getElementById('fractureDetails').value.trim();
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+        if (!feedback) {
+            alert('Please enter feedback before submitting.');
+            return;
+        }
+
+        try {
+            const response = await fetch("{{ route('addFeedback') }}", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ feedback: feedback }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit feedback.');
+            }
+
+            const result = await response.json();
+            alert('Feedback submitted successfully!');
+            resetFields();
+        } catch (error) {
+            alert(`Error submitting feedback: ${error.message}`);
+        }
+    });
+
+    function resetFields() {
+        uploadImageInput.value = '';
+        resetPreview();
+
+        document.getElementById('patientName').value = '';
+        document.getElementById('patientEmail').value = '';
+        document.getElementById('patientAge').value = '';
+
+        document.getElementById('fractureDetails').value = '';
+
+        additionalInfoRow.style.display = 'none';
+
+        document.getElementById('resultInfo').innerHTML = 'Uploaded image and detection results will be displayed here.';
+    }
 
 
     // Handle image removal
