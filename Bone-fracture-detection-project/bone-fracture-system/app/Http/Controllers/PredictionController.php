@@ -37,15 +37,18 @@ class PredictionController extends Controller
             }else{
                 $regressionResponse = $this->predictionService->predictRegression($image);
                 $responseRegressionData = json_decode($regressionResponse->getContent(), true);
-
                 if ($regressionResponse->isSuccessful() && $classifyResponse->isSuccessful()){
                     if (Auth::user()->user_type == 'doctor'){
+                        $healingTime = $this->predictionService->healing_time($responseRegressionData['diagonal_mm'],$request);
                         $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id,$responseRegressionData);
+                    }else{
+                        $healingTime = $this->predictionService->healing_time($responseRegressionData['diagonal_mm']);
                     }
                     return response()->json([
                         'image_url' => $responseRegressionData['image_url'],
                         'diagonal_mm'=> $responseRegressionData['diagonal_mm'],
-                        'image_class' => $responseClassifyData['image_class']
+                        'image_class' => $responseClassifyData['image_class'],
+                        'healing_time' => $healingTime
                     ]);
 
                 }else{

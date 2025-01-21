@@ -29,4 +29,8 @@ class UserService
         return $this->userRepository->updateUser($userId, $data);
     }
 
+    public function fetchUserDetails($search,$type){
+        return $this->userRepository->fetchUserDetails($search,$type);
+    }
+
 }

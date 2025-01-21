@@ -48,4 +48,18 @@ class UserRepository
         return $user;
     }
 
+    public function fetchUserDetails($search,$type)
+    {
+        if ($type == 'email'){
+            $patients = User::where('email', 'LIKE', "%{$search}%")
+                ->where('user_type', 'regular_user')
+                ->get(['id', 'email', 'name', 'age']);
+        }else{
+            $patients = User::where('name', 'LIKE', "%{$search}%")
+                ->where('user_type', 'regular_user')
+                ->get(['id', 'email', 'name', 'age']);
+        }
+        return $patients;
+    }
+
 }

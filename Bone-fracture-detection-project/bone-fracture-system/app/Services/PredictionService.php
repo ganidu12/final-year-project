@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Repository\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -8,6 +10,12 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class PredictionService
 {
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     public function predictRegression($image)
     {
         $response = Http::attach(
@@ -117,4 +125,25 @@ class PredictionService
             ], $response->status());
         }
     }
+
+    public function healing_time($fracture_size,$request= null)
+    {
+        if ($request){
+            $age = $this->userRepository->findUserByEmail($request->patientEmail)->age;
+        }else{
+            $age = Auth::user()->age;
+        }
+
+        $fracture_size_cm = $fracture_size / 10;
+
+        $base_healing_time = 6;
+
+        $healing_time = $base_healing_time + ($fracture_size_cm * ($age / 100));
+
+        $min_weeks = floor($healing_time);
+        $max_weeks = ceil($healing_time);
+
+        return "{$min_weeks}-{$max_weeks} weeks";
+    }
+
 }

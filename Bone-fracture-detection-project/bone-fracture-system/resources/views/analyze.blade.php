@@ -151,13 +151,14 @@
                             <label for="patientName" class="form-label">Patient Name</label>
                             <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="patientEmail" class="form-label">Patient Email</label>
-                            <input type="email" class="form-control" id="patientEmail" placeholder="Enter Patient Email">
+                            <input type="email" class="form-control" id="patientEmail" placeholder="Enter Patient Email" autocomplete="off">
+                            <ul id="emailSuggestions" class="list-group position-absolute w-100" style="z-index: 100; display: none;"></ul>
                         </div>
                         <div class="mb-3">
                             <label for="patientAge" class="form-label">Patient Age</label>
-                            <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
+                            <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age" readonly>
                         </div>
                         <button type="submit" id ="submit-btn" class="btn btn-primary w-100">Submit</button>
                     </form>
@@ -213,6 +214,19 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
     const additionalInfoRow = document.getElementById('additionalInfoRow');
     const submitAdditionalInfoButton = document.getElementById('submitAdditionalInfo');
+
+    const emailInput = document.getElementById('patientEmail');
+    const nameInput = document.getElementById('patientName');
+    const ageInput = document.getElementById('patientAge');
+    const emailSuggestions = document.getElementById('emailSuggestions');
+    const nameSuggestions = document.createElement('ul');
+    if (nameSuggestions && nameInput){
+        nameSuggestions.className = 'list-group position-absolute w-100';
+        nameSuggestions.style = 'z-index: 100; display: none;';
+        nameInput.parentElement.appendChild(nameSuggestions);
+    }
+
+
     const predictRoute = "{{ route('predict') }}";
     let scanningOverlay = null;
 
@@ -289,7 +303,8 @@
                 }
                 document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class} <br>
-                <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}
+                <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}<br>
+                <strong>Healing Time :</strong> ${result.healing_time}
             `;
                 if (additionalInfoRow){
                     additionalInfoRow.style.display = 'block';
@@ -333,6 +348,77 @@
                 resetFields();
             } catch (error) {
                 alert(`Error submitting feedback: ${error.message}`);
+            }
+        });
+    }
+
+    async function fetchAndDisplaySuggestions(query, route, inputField, suggestionsList) {
+        if (query.length < 2) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch(route, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ query: query }),
+            });
+
+            const results = await response.json();
+            suggestionsList.innerHTML = '';
+
+            if (results.length > 0) {
+                suggestionsList.style.display = 'block';
+                results.forEach(patient => {
+                    const suggestionItem = document.createElement('li');
+                    suggestionItem.className = 'list-group-item list-group-item-action';
+                    suggestionItem.textContent = inputField === emailInput ? patient.email : patient.name;
+                    suggestionItem.dataset.email = patient.email;
+                    suggestionItem.dataset.name = patient.name;
+                    suggestionItem.dataset.age = patient.age;
+
+                    suggestionItem.addEventListener('click', function () {
+                        inputField.value = inputField === emailInput ? patient.email : patient.name;
+                        emailInput.value = patient.email;
+                        nameInput.value = patient.name;
+                        ageInput.value = patient.age;
+
+                        suggestionsList.style.display = 'none';
+                    });
+
+                    suggestionsList.appendChild(suggestionItem);
+                });
+            } else {
+                suggestionsList.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+        }
+    }
+
+    if (emailInput){
+        emailInput.addEventListener('input', function () {
+            fetchAndDisplaySuggestions(this.value.trim(), "{{ route('fetchPatientDetailsEmail') }}", emailInput, emailSuggestions);
+        });
+    }
+    if (nameInput){
+        nameInput.addEventListener('input', function () {
+            fetchAndDisplaySuggestions(this.value.trim(), "{{ route('fetchPatientDetailsName') }}", nameInput, nameSuggestions);
+        });
+    }
+
+    if (emailSuggestions && nameSuggestions){
+        document.addEventListener('click', function (e) {
+            if (!emailSuggestions.contains(e.target) && e.target !== emailInput) {
+                emailSuggestions.style.display = 'none';
+            }
+            if (!nameSuggestions.contains(e.target) && e.target !== nameInput) {
+                nameSuggestions.style.display = 'none';
             }
         });
     }

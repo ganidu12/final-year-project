@@ -58,4 +58,16 @@ class UserController extends Controller
         ], 500);
     }
 
+    public function fetchPatientDetailsWithEmail(Request $request){
+        $search = $request->get('query');
+        $patients = $this->userService->fetchUserDetails($search,'email');
+        return response()->json($patients);
+    }
+
+    public function fetchPatientDetailsWithName(Request $request){
+        $search = $request->get('query');
+        $patients = $this->userService->fetchUserDetails($search,'name');
+        return response()->json($patients);
+    }
+
 }
