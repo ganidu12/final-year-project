@@ -24,7 +24,13 @@ class PatientHistoryRepository
 
     public function getPatientHistoryFromDoctorId($doctorId)
     {
-        $patientHistory = PatientHistory::where('doctor_id',$doctorId)->where('deleted_at',null)->with('user')->get();
+        $patientHistory = PatientHistory::where('doctor_id',$doctorId)->where('deleted_at',null)->with('user')->orderBy('created_at', 'desc')->get();
+        return $patientHistory;
+    }
+
+    public function getPatientHistoryFromUserId($userId)
+    {
+        $patientHistory = PatientHistory::where('user_id',$userId)->where('deleted_at',null)->with('user')->orderBy('created_at', 'desc')->get();
         return $patientHistory;
     }
 

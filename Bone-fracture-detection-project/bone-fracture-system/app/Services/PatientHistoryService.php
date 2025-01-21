@@ -41,6 +41,11 @@ class PatientHistoryService
         return $this->patientHistoryRepository->getPatientHistoryFromDoctorId($doctorId);
     }
 
+    public function getPatientHistoryFromUserId($userId)
+    {
+        return $this->patientHistoryRepository->getPatientHistoryFromUserId($userId);
+    }
+
     public function deletePatientHistory($id)
     {
         try {

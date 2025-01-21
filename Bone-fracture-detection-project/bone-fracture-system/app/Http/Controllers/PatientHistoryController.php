@@ -21,6 +21,8 @@ class PatientHistoryController extends Controller
         $user = Auth::user();
         if ($user->user_type == "doctor"){
             $patientHistory = $this->patientHistoryService->getPatientHistoryFromDoctorId($user->id);
+        }else{
+            $patientHistory = $this->patientHistoryService->getPatientHistoryFromUserId($user->id);
         }
         return view('check-history', compact('patientHistory'));
     }

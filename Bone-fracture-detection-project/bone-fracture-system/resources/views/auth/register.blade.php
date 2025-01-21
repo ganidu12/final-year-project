@@ -40,16 +40,16 @@
             text-align: center;
         }
         .signin-link a {
-            color: #000; /* Black color for "Sign In" link */
+            color: #000;
             text-decoration: none;
         }
         .signin-link a:hover {
             text-decoration: underline;
         }
         #sign-up-btn {
-            background-color: #2f2c2c; /* Updated background color */
-            color: #fff; /* White text */
-            border: none; /* Remove border */
+            background-color: #2f2c2c;
+            color: #fff;
+            border: none;
         }
     </style>
 </head>
@@ -59,12 +59,11 @@
     <div class="signup-form">
         <h4 class="text-center">Sign Up</h4>
 
-        <!-- Display Only the First Validation Error -->
         @if ($errors->any())
         <script>
             Swal.fire({
                 title: 'Error!',
-                text: '{{ $errors->first() }}', // Get only the first error message
+                text: '{{ $errors->first() }}',
                 icon: 'error',
                 confirmButtonText: 'OK',
                 customClass: {
@@ -74,7 +73,7 @@
         </script>
         @endif
 
-        <form action="{{ route('register.submit') }}" method="POST">
+        <form action="{{ route('register.submit') }}" method="POST" id="signup-form">
             @csrf
             <div class="form-group mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -95,14 +94,40 @@
                     <option value="doctor" {{ old('user_type') == 'doctor' ? 'selected' : '' }}>Doctor</option>
                 </select>
             </div>
+
+            <!-- Age field will be dynamically added here -->
+            <div class="form-group mb-3" id="age-container" style="display: none;">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" id="age" class="form-control" placeholder="Age" name="age" value="{{ old('age') }}">
+            </div>
+
             <button type="submit" id="sign-up-btn" class="btn btn-primary">Sign Up</button>
         </form>
 
-        <!-- Already have an account? Sign In Section -->
         <div class="signin-link">
             <p>Already have an account? <a href="{{ route('login') }}">Sign In</a></p>
         </div>
     </div>
 </div>
+
+<script>
+    const userType = document.getElementById('user_type');
+    const ageContainer = document.getElementById('age-container');
+
+    userType.addEventListener('change', function() {
+        if (userType.value === 'regular_user') {
+            ageContainer.style.display = 'block';
+        } else {
+            ageContainer.style.display = 'none';
+        }
+    });
+
+    // Trigger change event on page load to maintain state
+    window.addEventListener('load', function() {
+        if (userType.value === 'regular_user') {
+            ageContainer.style.display = 'block';
+        }
+    });
+</script>
 </body>
 </html>

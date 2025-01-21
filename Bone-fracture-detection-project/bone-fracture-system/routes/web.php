@@ -27,9 +27,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register-user', [RegisterController::class, 'register'])->name('register.submit');
 Route::post('/login-user', [LoginController::class, 'login'])->name('login.submit');
-Route::get('/analyze-fracture', function () {
-    return view('analyze');
-})->name('analyze-fracture');
+Route::get('/analyze-fracture', [PredictionController::class, 'index'])->name('analyze-fracture');
 Route::get('/check-history',[PatientHistoryController::class, 'getHistory'])->name('getHistory');
 Route::put('/feedback',[PatientHistoryController::class, 'addFeedback'])->name('addFeedback');
 Route::delete('/delete-history',[PatientHistoryController::class, 'deleteHistory'])->name('deleteHistory');

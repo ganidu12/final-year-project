@@ -78,6 +78,15 @@
             border: none; /* Remove border */
         }
     </style>
+    @if (auth()->user()->user_type === 'regular_user')
+    <style>
+        .main-content {
+            margin-left: 270px;
+            margin-top: 30px; /* Space for the top bar */
+            padding: 20px;
+        }
+    </style>
+    @endif
 </head>
 <body>
 
@@ -87,6 +96,47 @@
 <!-- Main Content -->
 <div class="main-content">
     <div class="container-fluid mt-4">
+        @if (auth()->user()->user_type === 'regular_user')
+        <!-- Single Container for Regular User -->
+        <div class="row g-4 justify-content-center" style="margin-top: -20px;"> <!-- Adjust the margin here -->
+            <div class="col-lg-8">
+                <div class="upload-section p-4 text-center shadow-sm rounded" style="background-color: #f8f9fa; height: auto;">
+                    <form>
+                        <!-- Upload Image Section -->
+                        <div class="mb-4">
+                            <label for="uploadImage" class="form-label d-block fw-bold" style="color: #2f2c2c;">Upload Image</label>
+                            <input type="file" class="form-control" id="uploadImage" accept="image/*" style="max-width: 400px; margin: 0 auto;">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submit-btn" class="btn btn-dark w-100" style="background-color: #2f2c2c;">Submit</button>
+                    </form>
+
+                    <!-- Visualization Section -->
+                    <div class="visualization-section mt-4 p-3 text-center shadow-sm rounded" style="background-color: #ffffff; border: 1px solid #e0e0e0; height: auto;">
+                        <h4 style="color: #2f2c2c;">Visualization</h4>
+                        <div id="imagePreview" class="no-image-placeholder mt-3 d-flex justify-content-center align-items-center" style="width: 100%; max-width: 300px; height: 300px; margin: 0 auto; border: 2px dashed #ccc; border-radius: 8px; background-color: #f8f9fa; color: #777;">
+                            No Image
+                            <div class="loading-overlay" id="loadingOverlay">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden" >Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remove Image Button -->
+                        <button id="removeImage" class="btn btn-danger mt-2 remove-btn" style="display: none;">Remove Image</button>
+
+                        <!-- Result Info -->
+                        <p id="resultInfo" class="mt-2 text-muted" style="font-size: 14px;">
+                            Uploaded image and detection results will be displayed here.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+
         <div class="row g-4">
             <!-- Left Column: Upload and Add Patient Details -->
             <div class="col-lg-6 col-md-12">
@@ -146,6 +196,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
 
 
@@ -166,7 +217,9 @@
     let scanningOverlay = null;
 
     document.addEventListener('DOMContentLoaded', () => {
-        loadingOverlay.classList.add('hidden');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('hidden');
+        }
     });
     // Handle image upload and preview
     uploadImageInput.addEventListener('change', function (event) {
@@ -175,8 +228,10 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 imagePreview.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" class="image-preview">`;
-                imagePreview.appendChild(loadingOverlay);
-                loadingOverlay.classList.add('hidden');
+                if (loadingOverlay) {
+                    imagePreview.appendChild(loadingOverlay);
+                    loadingOverlay.classList.add('hidden');
+                }
                 removeImageButton.style.display = 'block'; // Show remove button
             };
             reader.readAsDataURL(file);
@@ -190,8 +245,7 @@
         loadingOverlay.classList.remove('hidden'); // Show loading animation
         removeImageButton.style.display = 'none';
         const file = uploadImageInput.files[0];
-        const patientEmail = document.getElementById('patientEmail').value;
-
+        const patientEmail = document.getElementById('patientEmail');
         if (!file) {
             alert('Please upload an image before submitting.');
             return;
@@ -200,7 +254,10 @@
 
         const formData = new FormData();
         formData.append('image', file);
-        formData.append('patientEmail', patientEmail);
+        if (patientEmail){
+            formData.append('patientEmail', patientEmail.value);
+        }
+
 
 
         try {
@@ -234,46 +291,51 @@
                 <strong>Diagnosis Result:</strong> ${result.image_class} <br>
                 <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}
             `;
-                additionalInfoRow.style.display = 'block';
+                if (additionalInfoRow){
+                    additionalInfoRow.style.display = 'block';
+                }
             }
         } catch (error) {
             alert(`Error: ${error.message}`);
+            console.log(error.message)
         }finally {
             loadingOverlay.classList.add('hidden');
         }
     });
 
-    submitAdditionalInfoButton.addEventListener('click', async function (event) {
-        event.preventDefault();
-        const feedback = document.getElementById('fractureDetails').value.trim();
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    if (submitAdditionalInfoButton) {
+        submitAdditionalInfoButton.addEventListener('click', async function (event) {
+            event.preventDefault();
+            const feedback = document.getElementById('fractureDetails').value.trim();
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        if (!feedback) {
-            alert('Please enter feedback before submitting.');
-            return;
-        }
-
-        try {
-            const response = await fetch("{{ route('addFeedback') }}", {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({ feedback: feedback }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to submit feedback.');
+            if (!feedback) {
+                alert('Please enter feedback before submitting.');
+                return;
             }
 
-            const result = await response.json();
-            alert('Feedback submitted successfully!');
-            resetFields();
-        } catch (error) {
-            alert(`Error submitting feedback: ${error.message}`);
-        }
-    });
+            try {
+                const response = await fetch("{{ route('addFeedback') }}", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({feedback: feedback}),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to submit feedback.');
+                }
+
+                const result = await response.json();
+                alert('Feedback submitted successfully!');
+                resetFields();
+            } catch (error) {
+                alert(`Error submitting feedback: ${error.message}`);
+            }
+        });
+    }
 
     function resetFields() {
         uploadImageInput.value = '';

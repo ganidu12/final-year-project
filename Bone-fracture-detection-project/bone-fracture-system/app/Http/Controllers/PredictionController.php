@@ -19,6 +19,12 @@ class PredictionController extends Controller
         $this->patientHistoryService = $patientHistoryService;
     }
 
+    public function index()
+    {
+        Log::info('Authenticated User:', ['user' => Auth::user()]);
+        return view('analyze');
+    }
+
     public function predict(Request $request)
     {
         Log::info("current user". Auth::user()->email);

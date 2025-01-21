@@ -23,13 +23,18 @@ class UserController extends Controller
     {
         Log::info($request);
         try {
-            $request->validate([
+            $rules = [
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
                 'phone' => 'nullable|string|max:15',
                 'address' => 'nullable|string|max:255',
                 'profile_img' => 'nullable|image|max:2048',
-            ]);
+            ];
+            if (auth()->user()->user_type === 'regular_user') {
+                $rules['age'] = 'required|integer|min:1|max:120';
+            }
+            $request->validate($rules);
+
         } catch (\Exception $e) {
             Log::error($e);
             return response()->json([

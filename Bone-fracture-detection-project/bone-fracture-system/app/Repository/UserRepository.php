@@ -18,6 +18,7 @@ class UserRepository
         $user->email = $data['email'];
         $user->password = $data['password'];
         $user->user_type = $data['user_type'];
+        $user->age = $data['age'];
         $user->save();
         return $user;
     }
@@ -41,6 +42,7 @@ class UserRepository
             'phone' => $data['phone'] ?? null,
             'address' => $data['address'] ??null,
             'profile_img' => $data['profile_img'] ?? $user->profile_img,
+            'age' => $data['age'] ?? $user->age,
         ]);
         $user->save();
         return $user;

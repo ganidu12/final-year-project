@@ -131,6 +131,15 @@
                 </div>
             </div>
             <div class="form-row">
+                @if (auth()->user()->user_type === 'regular_user')
+                <div class="form-col">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" value="{{ auth()->user()->age }}" placeholder="Enter Age" required>
+                </div>
+                @endif
+            </div>
+
+            <div class="form-row">
                 <div class="form-col">
                     <label for="address" class="form-label">Address</label>
                     <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Address">{{ auth()->user()->address }}</textarea>

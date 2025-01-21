@@ -35,20 +35,15 @@ class LoginService
 
     public function loginUser(array $validatedData)
     {
-        Log::info("gggggggggggggg");
         $user = $this->userRepository->findUserByEmail($validatedData['email']);
         Log::info($user);
         if (!Hash::check($validatedData['password'], $user->password)) {
-            Log::info("llllllllllllllll");
             return false;
         }
         if (Auth::loginUsingId($user->id)) {
             session()->regenerate();
-            Log::info("kkkkkkkkk");
             return $user;
         }
-
-        Log::info("jjjjjjjjjjjjjjjjjjjjjjjj");
         return false;
     }
 }
