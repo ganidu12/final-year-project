@@ -25,7 +25,6 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        Log::info("seds");
         try {
             $validatedData = $request->validate([
                 'email' => [
@@ -47,6 +46,11 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong. Please try again later.');
         }
+    }
+
+    public function logoutUser()
+    {
+        return $this->loginService->logoutUser();
     }
 
 }

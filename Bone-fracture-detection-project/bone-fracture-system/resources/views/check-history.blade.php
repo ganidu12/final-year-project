@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <style>
         /* General Styles */
         body {
@@ -117,13 +118,13 @@
         <div class="portlet-title">
             Patient History
         </div>
-        <table>
+        <table id="patientTable" class="display" style="width:100%">
             <thead>
             <tr>
                 <th>Patient Name</th>
                 <th>Patient Email</th>
-                <th>Diagnosis</th>
                 <th>Feedback</th>
+                <th>Date</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -133,12 +134,12 @@
             <tr>
                 <td>{{ $history->user->name }}</td>
                 <td>{{ $history->user->email }}</td>
-                <td>{{ $history->diagnosis }}</td>
                 @if($history->feedback)
                 <td>{{ $history->feedback }}</td>
                 @else
                 <td style="text-indent: 40px;">--</td>
                 @endif
+                <td>{{ $history->created_at->format('Y-m-d')}}</td>
                 <td>
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}">
                     <i class="fa fa-eye"></i> View
@@ -217,10 +218,29 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 <script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        $('#patientTable').DataTable({
+            responsive: true,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50],
+            searching: false,
+            language: {
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                paginate: {
+                    next: "Next",
+                    previous: "Previous"
+                }
+            }
+        });
+
     const viewModal = document.getElementById('viewModal');
     viewModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
@@ -231,15 +251,9 @@
         document.getElementById('modalFractureSize').textContent = fractureSize || 'N/A';
         document.getElementById('modalImage').src = url;
     });
+    });
 
-    let selectedId = null; // Variable to store the ID of the record to delete
-
-    function openDeleteModal(id) {
-        selectedId = id; // Store the ID in a variable
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-        deleteModal.show(); // Show the modal
-    }
-
+    let selectedId = null;
     document.getElementById('confirmDeleteButton').addEventListener('click', function () {
         if (selectedId) {
             $.ajax({
@@ -267,6 +281,11 @@
         }
     });
 
+    function openDeleteModal(id) {
+        selectedId = id; // Store the ID in a variable
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+        deleteModal.show(); // Show the modal
+    }
 </script>
 </body>
 </html>

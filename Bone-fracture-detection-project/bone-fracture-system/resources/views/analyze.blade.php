@@ -6,12 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
             height: 60vh;
+        }
+        #toast-container > .toast-success {
+            background-color: #28a745; /* Green */
+        }
+
+        /* Error Message */
+        #toast-container > .toast-error {
+            background-color: #dc3545; /* Red */
         }
 
         /* Adjust content to accommodate sidebar and top bar */
@@ -70,12 +80,33 @@
             margin-top: 10px;
         }
         .loading-overlay.hidden {
-            display: none; /* Use this class to hide the overlay */
+            display: none;
         }
         #submit-btn {
-            background-color: #2f2c2c; /* Updated background color */
-            color: #fff; /* White text */
-            border: none; /* Remove border */
+            background-color: #2f2c2c;
+            color: #fff;
+            border: none;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        #imagePreview {
+            position: relative;
         }
     </style>
     @if (auth()->user()->user_type === 'regular_user')
@@ -206,7 +237,26 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right", // Sets toast position
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
     const uploadImageInput = document.getElementById('uploadImage');
     const imagePreview = document.getElementById('imagePreview');
     const removeImageButton = document.getElementById('removeImage');
@@ -256,14 +306,14 @@
 
     submitButton.addEventListener('click', async function (event) {
         event.preventDefault(); // Prevent default form submission
-        loadingOverlay.classList.remove('hidden'); // Show loading animation
-        removeImageButton.style.display = 'none';
         const file = uploadImageInput.files[0];
         const patientEmail = document.getElementById('patientEmail');
         if (!file) {
-            alert('Please upload an image before submitting.');
+            toastr.error('Please upload an image before submitting.');
             return;
         }
+        loadingOverlay.classList.remove('hidden'); // Show loading animation
+        removeImageButton.style.display = 'none';
 
 
         const formData = new FormData();
@@ -287,32 +337,35 @@
             });
 
             if (!response.ok) {
-                throw new Error('Failed to process the image.');
-            }
+                const errorData = await response.json();
+                if (errorData.message) {
+                    console.log(errorData)
+                    toastr.error(`Error: ${errorData.message}`);
+                } else {
+                    throw new Error('Failed to process the image.'); // Fallback error
+                }
+            }else{
+                const result = await response.json();
+                document.getElementById('resultInfo').innerHTML = '';
 
-            const result = await response.json();
-            document.getElementById('resultInfo').innerHTML = '';
-
-            if (result.image_class === 'Non-Fractured') {
-                document.getElementById('resultInfo').innerHTML = `
+                if (result.image_class === 'Non-Fractured') {
+                    document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class}
             `;
-            } else{
-                if (result.image_url) {
-                    imagePreview.innerHTML = `<img src="${result.image_url}" alt="Processed Image" class="image-preview">`;
-                }
-                document.getElementById('resultInfo').innerHTML = `
+                } else{
+                    if (result.image_url) {
+                        imagePreview.innerHTML = `<img src="${result.image_url}" alt="Processed Image" class="image-preview">`;
+                    }
+                    document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class} <br>
                 <strong>Diagonal Length (mm):</strong> ${result.diagonal_mm}<br>
                 <strong>Healing Time :</strong> ${result.healing_time}
             `;
-                if (additionalInfoRow){
-                    additionalInfoRow.style.display = 'block';
+                    if (additionalInfoRow){
+                        additionalInfoRow.style.display = 'block';
+                    }
                 }
             }
-        } catch (error) {
-            alert(`Error: ${error.message}`);
-            console.log(error.message)
         }finally {
             loadingOverlay.classList.add('hidden');
         }
@@ -325,7 +378,7 @@
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             if (!feedback) {
-                alert('Please enter feedback before submitting.');
+                toastr.error('Please enter feedback before submitting.');
                 return;
             }
 
@@ -344,7 +397,8 @@
                 }
 
                 const result = await response.json();
-                alert('Feedback submitted successfully!');
+                toastr.success('Please enter feedback before submitting.');
+
                 resetFields();
             } catch (error) {
                 alert(`Error submitting feedback: ${error.message}`);

@@ -46,4 +46,12 @@ class LoginService
         }
         return false;
     }
+
+    public function logoutUser()
+    {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect('/login')->with('success', 'You have been logged out successfully.');
+    }
 }

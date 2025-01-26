@@ -35,5 +35,8 @@ Route::post('/update-profile', [UserController::class, 'updateProfile'])->name('
 Route::get('/edit-profile',[UserController::class, 'profileIndex'])->name('edit-profile');
 Route::post('/fetch-patient-details-email', [UserController::class, 'fetchPatientDetailsWithEmail'])->name('fetchPatientDetailsEmail');
 Route::post('/fetch-patient-details-name', [UserController::class, 'fetchPatientDetailsWithName'])->name('fetchPatientDetailsName');
+Route::post('/logout', [LoginController::class, 'logoutUser'])->name('logout');
+
+
 
 

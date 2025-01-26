@@ -106,6 +106,19 @@
     </style>
 </head>
 <body>
+@if(session('logout_success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
+    {{ session('logout_success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<script>
+    // Delay the redirect for 2 seconds
+    setTimeout(function() {
+        window.location.href = '/login';
+    }, 2000);
+</script>
+@endif
+
 <!-- Sidebar -->
 <div class="sidebar d-flex flex-column justify-content-between">
     <div>
@@ -122,10 +135,14 @@
         </a>
     </div>
     <div>
-        <a href="#" class="nav-link">
-            <i class="fas fa-sign-out-alt me-2"></i> <!-- Icon for Logout -->
-            Logout
-        </a>
+        <form id="logout-form" action="/logout" method="POST" style="display: inline;">
+            @csrf
+            <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit();">
+                <i class="fas fa-sign-out-alt me-2"></i> <!-- Icon for Logout -->
+                Logout
+            </a>
+        </form>
+
     </div>
 </div>
 

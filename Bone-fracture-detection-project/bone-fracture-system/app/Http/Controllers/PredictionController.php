@@ -7,6 +7,7 @@ use App\Services\PredictionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class PredictionController extends Controller
 {
@@ -27,6 +28,18 @@ class PredictionController extends Controller
 
     public function predict(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $validator->sometimes('patientEmail', 'required|email|max:255', function () {
+            return Auth::user()->user_type === 'doctor';
+        });
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
         Log::info("current user". Auth::user()->email);
         try {
             $image = $request->file('image');
