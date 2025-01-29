@@ -18,7 +18,9 @@ class PatientHistoryRepository
         $patientHistory->fracture_size = $data['fracture_size'];
         $patientHistory->image_url = $data['image_url'];
         $patientHistory->doctor_id = $data['doctor_id'];
+        $patientHistory->healing_time = $data['healing_time'];
         $patientHistory->save();
+
         return $patientHistory;
     }
 

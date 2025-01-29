@@ -141,7 +141,7 @@
                 @endif
                 <td>{{ $history->created_at->format('Y-m-d')}}</td>
                 <td>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}" data-healing-time="{{ $history->healing_time }}">
                     <i class="fa fa-eye"></i> View
                 </button>
                 <button type="button" class="btn btn-outline-danger" onclick="openDeleteModal('{{ $history->id }}')">
@@ -177,11 +177,9 @@
                 <div class="row">
                     <!-- Left Section: Patient Details -->
                     <div class="col-md-6">
-                        <h6 class="text-uppercase mb-3" style="color: #666;">Patient Information</h6>
-                        <p><strong>Fracture Size:</strong> <span id="modalFractureSize" style="color: #333;"></span></p>
-                        <p><strong>Additional Notes:</strong>
-                            <span style="color: #555;">Placeholder text for more details or comments regarding the patient.</span>
-                        </p>
+                        <h6 class="text-uppercase mb-3" style="color: #666;">Diagnosis Information</h6>
+                        <p><strong>Fracture Size:</strong> <span id="modalFractureSize" style="color: #333;"></span> mm</p>
+                        <p><strong>Healing Time:</strong> <span id="modalHealingTime" style="color: #333;"></span></p>
                     </div>
                     <!-- Right Section: Image -->
                     <div class="col-md-6 text-center">
@@ -247,8 +245,10 @@
 
         const url = button.getAttribute('data-url');
         const fractureSize = button.getAttribute('data-fracture-size');
+        const healingTime = button.getAttribute('data-healing-time');
 
         document.getElementById('modalFractureSize').textContent = fractureSize || 'N/A';
+        document.getElementById('modalHealingTime').textContent = healingTime || 'N/A';
         document.getElementById('modalImage').src = url;
     });
     });

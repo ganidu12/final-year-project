@@ -18,7 +18,7 @@ class PatientHistoryService
         $this->patientHistoryRepository = $patientHistoryRepository;
         $this->userRepository = $userRepository;
     }
-    public function saveDiagnosis($request,$imageClass,$doctor_id,$data)
+    public function saveDiagnosis($request,$imageClass,$doctor_id,$data,$healingTime)
     {
         try {
             $userId = $this->userRepository->findUserByEmail($request->patientEmail)->id;
@@ -27,7 +27,8 @@ class PatientHistoryService
                 'diagnosis' => $imageClass,
                 'doctor_id' => $doctor_id,
                 'image_url' => $data['image_url'],
-                'fracture_size' => $data['diagonal_mm']
+                'fracture_size' => round($data['diagonal_mm'], 2),
+                'healing_time' => $healingTime
             ];
             return $this->patientHistoryRepository->createPatientHistory($patientHistoryData);
         }catch (\Exception $e){
