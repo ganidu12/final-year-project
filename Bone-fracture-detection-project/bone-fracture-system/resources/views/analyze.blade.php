@@ -394,10 +394,11 @@
 
                 if (!response.ok) {
                     throw new Error('Failed to submit feedback.');
+                }else {
+                    toastr.success('Submitted feedback successfully.');
                 }
 
                 const result = await response.json();
-                toastr.success('Please enter feedback before submitting.');
 
                 resetFields();
             } catch (error) {
