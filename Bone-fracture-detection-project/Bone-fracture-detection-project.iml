@@ -124,6 +124,12 @@
       <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/barryvdh/laravel-dompdf" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/dompdf/dompdf" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/dompdf/php-font-lib" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/dompdf/php-svg-lib" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/masterminds/html5" />
+      <excludeFolder url="file://$MODULE_DIR$/bone-fracture-system/vendor/sabberworm/php-css-parser" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

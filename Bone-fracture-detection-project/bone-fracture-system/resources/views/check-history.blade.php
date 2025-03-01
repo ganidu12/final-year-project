@@ -105,6 +105,59 @@
         .modal-backdrop {
             backdrop-filter: blur(8px);
         }
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            /* Ensure the main content is full-width on smaller screens */
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px;
+                padding: 10px;
+            }
+
+            /* Make the table scrollable */
+            .portlet {
+                overflow-x: auto;
+            }
+
+            /* Prevent table overflow */
+            table {
+                width: 100%;
+                min-width: 800px; /* Ensure columns are not squished */
+            }
+
+            /* Handle modal responsiveness */
+            .modal-lg {
+                max-width: 95%;
+            }
+
+            /* Center modal content vertically */
+            .modal-dialog-centered {
+                min-height: calc(100vh - 1rem);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Ensure table remains fully visible with horizontal scroll */
+            .portlet {
+                overflow-x: auto;
+            }
+
+            /* Maintain table header and structure */
+            table {
+                width: 100%;
+                min-width: 800px;
+            }
+
+            /* Ensure modal image scales correctly */
+            #modalImage {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -144,7 +197,20 @@
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal" data-url="{{ $history->image_url }}" data-fracture-size="{{ $history->fracture_size }}" data-healing-time="{{ $history->healing_time }}">
                     <i class="fa fa-eye"></i> View
                 </button>
-                <button type="button" class="btn btn-outline-danger" onclick="openDeleteModal('{{ $history->id }}')">
+                <button type="button"
+                        class="btn btn-outline-success download-btn"
+                        data-patient-name="{{ $history->user->name }}"
+                        data-patient-email="{{ $history->user->email }}"
+                        data-fracture-size="{{ $history->fracture_size }}"
+                        data-healing-time="{{ $history->healing_time }}"
+                        data-url="{{ $history->image_url }}"
+                        data-created-date="{{ $history->created_at->format('Y-m-d') }}"
+                        data-feedback="{{ $history->feedback ?? 'No feedback available' }}">
+                    <i class="fa fa-download"></i> Download PDF
+                </button>
+
+
+                    <button type="button" class="btn btn-outline-danger" onclick="openDeleteModal('{{ $history->id }}')">
                     <i class="fa fa-trash"></i> Delete
                 </button>
 
@@ -286,6 +352,56 @@
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
         deleteModal.show(); // Show the modal
     }
+
+    $(document).ready(function () {
+        $('.download-btn').on('click', function () {
+            const patientName = $(this).data('patient-name');
+            const patientEmail = $(this).data('patient-email');
+            const fractureSize = $(this).data('fracture-size');
+            const healingTime = $(this).data('healing-time');
+            const imageUrl = $(this).data('url');
+            const createdDate = $(this).data('created-date');
+            const feedback = $(this).data('feedback'); // Get the diagnosis/feedback
+
+            $.ajax({
+                url: "{{ route('download.pdf') }}",
+                method: 'POST',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    name: patientName,
+                    email: patientEmail,
+                    fracture_size: fractureSize,
+                    healing_time: healingTime,
+                    image_url: imageUrl,
+                    date: createdDate,
+                    feedback: feedback, // Pass the feedback to the controller
+                },
+                success: function (response, status, xhr) {
+                    const filename = "Diagnosis_Report.pdf";
+
+                    const link = document.createElement('a');
+                    const url = window.URL.createObjectURL(new Blob([response]));
+                    link.href = url;
+                    link.download = filename;
+
+                    document.body.appendChild(link);
+                    link.click();
+
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(link);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error generating PDF:', error);
+                    alert('Failed to download the PDF.');
+                }
+            });
+        });
+    });
+
+
 </script>
 </body>
 </html>

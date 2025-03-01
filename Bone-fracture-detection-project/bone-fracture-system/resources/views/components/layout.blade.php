@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar with Full-Width Links</title>
+    <title>Responsive Sidebar with Fixed Profile Icon</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -18,6 +18,7 @@
             left: 0;
             color: white;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
         }
         .sidebar .logo img {
             height: 50px;
@@ -31,18 +32,18 @@
             display: block;
             text-decoration: none;
             transition: all 0.3s ease;
-            width: 100%; /* Full width */
-            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Top border */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Bottom border */
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         .sidebar .nav-link:first-child {
-            border-top: none; /* Remove border for the first item */
+            border-top: none;
         }
         .sidebar .nav-link.active {
             background-color: #ffffff;
             color: black;
             font-weight: bold;
-            border: none; /* Remove borders for active state */
+            border: none;
         }
         .sidebar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.2);
@@ -58,7 +59,6 @@
             height: 60px;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
             padding: 0 20px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -67,7 +67,7 @@
             width: 45px;
             height: 45px;
             background-color: #ffffff;
-            overflow: hidden; /* Ensure the image stays inside the circle */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -86,21 +86,13 @@
             border-color: #1667c1;
         }
 
-        /* Responsive Adjustments */
+        /* Mobile Sidebar Adjustments */
         @media (max-width: 768px) {
             .sidebar {
-                width: 200px;
+                display: none;
             }
             .top-bar {
-                left: 200px;
-            }
-        }
-        @media (max-width: 576px) {
-            .sidebar {
-                width: 180px;
-            }
-            .top-bar {
-                left: 180px;
+                left: 0;
             }
         }
     </style>
@@ -112,45 +104,66 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <script>
-    // Delay the redirect for 2 seconds
     setTimeout(function() {
         window.location.href = '/login';
     }, 2000);
 </script>
 @endif
 
-<!-- Sidebar -->
-<div class="sidebar d-flex flex-column justify-content-between">
+<!-- Mobile Sidebar Toggle Button -->
+<div class="top-bar">
+    <button class="btn btn-outline-light text-dark d-md-none" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+    <!-- Profile Icon Fixed to the Right -->
+    <a href="/edit-profile" class="account-btn ms-auto">
+        <img src="{{ auth()->user()->profile_img ? asset('storage/' . auth()->user()->profile_img) : asset('images/dummy-profile-pic.jpg') }}" alt="Profile picture">
+    </a>
+</div>
+
+<!-- Desktop Sidebar -->
+<div class="sidebar d-none d-md-flex flex-column justify-content-between">
     <div>
         <div class="logo">
             <img src="{{ asset('images/bone fracture system logo.jpg') }}" alt="System Logo">
         </div>
         <a href="/analyze-fracture" class="nav-link @if(request()->is('analyze-fracture')) active @endif">
-            <i class="fas fa-x-ray me-2"></i> <!-- Icon for Analyze X-ray -->
-            Analyze X-ray
+            <i class="fas fa-x-ray me-2"></i> Analyze X-ray
         </a>
         <a href="/check-history" class="nav-link @if(request()->is('check-history')) active @endif">
-            <i class="fas fa-history me-2"></i> <!-- Icon for Check History -->
-            Check History
+            <i class="fas fa-history me-2"></i> Check History
         </a>
     </div>
     <div>
         <form id="logout-form" action="/logout" method="POST" style="display: inline;">
             @csrf
             <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit();">
-                <i class="fas fa-sign-out-alt me-2"></i> <!-- Icon for Logout -->
-                Logout
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
             </a>
         </form>
-
     </div>
 </div>
 
-<!-- Top Bar -->
-<div class="top-bar">
-    <a href="/edit-profile" class="account-btn">
-        <img src="{{ auth()->user()->profile_img ? asset('storage/' . auth()->user()->profile_img) : asset('images/dummy-profile-pic.jpg') }}" alt="Profile picture">
-    </a>
+<!-- Mobile Sidebar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileSidebarLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <a href="/analyze-fracture" class="nav-link @if(request()->is('analyze-fracture')) active @endif">
+            <i class="fas fa-x-ray me-2"></i> Analyze X-ray
+        </a>
+        <a href="/check-history" class="nav-link @if(request()->is('check-history')) active @endif">
+            <i class="fas fa-history me-2"></i> Check History
+        </a>
+        <form id="logout-form-mobile" action="/logout" method="POST" style="display: inline;">
+            @csrf
+            <a href="#" class="nav-link" onclick="document.getElementById('logout-form-mobile').submit();">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </a>
+        </form>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

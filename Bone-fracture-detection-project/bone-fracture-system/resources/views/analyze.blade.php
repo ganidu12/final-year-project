@@ -108,6 +108,50 @@
         #imagePreview {
             position: relative;
         }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            /* For Tablets and Smaller Screens */
+            .main-content {
+                margin-left: 0; /* Remove fixed margin */
+                margin-top: 60px; /* Maintain top spacing */
+                padding: 10px; /* Reduce padding */
+            }
+
+            .upload-section,
+            .visualization-section {
+                height: auto; /* Dynamic height */
+                padding: 15px; /* Adjust padding */
+            }
+
+            /* Make columns full-width on smaller devices */
+            .col-lg-6,
+            .col-lg-8,
+            .col-md-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            /* Image placeholder responsiveness */
+            .no-image-placeholder {
+                max-width: 100%;
+                height: auto; /* Auto adjust height */
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* For Mobile Devices */
+            .no-image-placeholder {
+                height: 200px; /* Smaller image container */
+            }
+
+            /* Ensure form elements and buttons take full width */
+            .btn,
+            .form-control {
+                width: 100%;
+            }
+        }
+
     </style>
     @if (auth()->user()->user_type === 'regular_user')
     <style>
@@ -116,6 +160,61 @@
             margin-top: 30px; /* Space for the top bar */
             padding: 20px;
         }
+        /* Responsive Adjustments for Regular User */
+        @media (max-width: 992px) {
+            /* Ensure main content is full width */
+            .main-content {
+                margin-left: 0;
+                margin-top: 60px;
+                padding: 10px;
+            }
+
+            /* Make upload and visualization sections responsive */
+            .upload-section,
+            .visualization-section {
+                height: auto; /* Dynamic height */
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            /* Full width columns on smaller screens */
+            .col-lg-8,
+            .col-md-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            /* Responsive image placeholder */
+            .no-image-placeholder {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Adjust the image preview container */
+            .image-preview {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Smaller placeholder height on mobile */
+            .no-image-placeholder {
+                height: 200px;
+            }
+
+            /* Full width buttons and inputs */
+            .btn,
+            .form-control {
+                width: 100%;
+            }
+
+            /* Visualization section responsiveness */
+            .visualization-section {
+                padding: 10px;
+            }
+        }
+
     </style>
     @endif
 </head>
@@ -130,7 +229,7 @@
         @if (auth()->user()->user_type === 'regular_user')
         <!-- Single Container for Regular User -->
         <div class="row g-4 justify-content-center" style="margin-top: -20px;"> <!-- Adjust the margin here -->
-            <div class="col-lg-8">
+            <div class="col-lg-8 col-md-12">
                 <div class="upload-section p-4 text-center shadow-sm rounded" style="background-color: #f8f9fa; height: auto;">
                     <form>
                         <!-- Upload Image Section -->
@@ -200,7 +299,8 @@
             <div class="col-lg-6 col-md-12">
                 <div class="visualization-section">
                     <h5>Visualization</h5>
-                    <div id="imagePreview" class="no-image-placeholder">
+                    <div id="imagePreview" class="no-image-placeholder mt-3 d-flex justify-content-center align-items-center"
+                         style="width: 100%; max-width: 300px; height: 300px; margin: 0 auto;">
                         No Image
                         <div class="loading-overlay" id="loadingOverlay">
                             <div class="spinner-border" role="status">

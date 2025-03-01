@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PatientHistoryController;
 use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
+    Route::get('/view-report', function () {
+        return view('report-generation.report'); // Make sure this matches the actual path of your Blade file
+    });
     Route::post('/predict', [PredictionController::class, 'predict'])->name('predict');
     Route::get('/analyze-fracture', [PredictionController::class, 'index'])->name('analyze-fracture');
     Route::get('/check-history', [PatientHistoryController::class, 'getHistory'])->name('getHistory');
@@ -41,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/fetch-patient-details-email', [UserController::class, 'fetchPatientDetailsWithEmail'])->name('fetchPatientDetailsEmail');
     Route::post('/fetch-patient-details-name', [UserController::class, 'fetchPatientDetailsWithName'])->name('fetchPatientDetailsName');
     Route::post('/logout', [LoginController::class, 'logoutUser'])->name('logout');
+    Route::post('/download-pdf', [ReportController::class, 'generatePDF'])->name('download.pdf');
 });
 
 
