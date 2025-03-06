@@ -19,6 +19,8 @@ class PatientHistoryRepository
         $patientHistory->image_url = $data['image_url'];
         $patientHistory->doctor_id = $data['doctor_id'];
         $patientHistory->healing_time = $data['healing_time'];
+        $patientHistory->patient_name = $data['patient_name'];
+        $patientHistory->patient_email = $data['patient_email'];
         $patientHistory->save();
 
         return $patientHistory;

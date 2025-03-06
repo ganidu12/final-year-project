@@ -107,6 +107,7 @@
 
         #imagePreview {
             position: relative;
+            overflow: auto;
         }
 
         /* Responsive Adjustments */
@@ -277,6 +278,10 @@
                             <label for="uploadImage" class="form-label">Upload Image</label>
                             <input type="file" class="form-control" id="uploadImage" accept="image/*">
                         </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="unregisteredPatient">
+                            <label class="form-check-label" for="unregisteredPatient">Patient is not registered to the system</label>
+                        </div>
                         <div class="mb-3">
                             <label for="patientName" class="form-label">Patient Name</label>
                             <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
@@ -288,7 +293,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="patientAge" class="form-label">Patient Age</label>
-                            <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age" readonly>
+                            <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
                         </div>
                         <button type="submit" id ="submit-btn" class="btn btn-primary w-100">Submit</button>
                     </form>
@@ -375,7 +380,8 @@
         nameSuggestions.style = 'z-index: 100; display: none;';
         nameInput.parentElement.appendChild(nameSuggestions);
     }
-
+    const isNotRegistered = document.getElementById('unregisteredPatient');
+    const patientAge = document.getElementById('patientAge');
 
     const predictRoute = "{{ route('predict') }}";
     let scanningOverlay = null;
@@ -420,6 +426,14 @@
         formData.append('image', file);
         if (patientEmail){
             formData.append('patientEmail', patientEmail.value);
+        }
+        formData.append('patientAge', ageInput.value)
+        if (isNotRegistered.checked) {
+            formData.append('isNotRegistered', 'true');
+            formData.append('patientAge',patientAge.value)
+            formData.append('patientName',nameInput.value)
+        } else {
+            formData.append('isNotRegistered', 'false');
         }
 
 

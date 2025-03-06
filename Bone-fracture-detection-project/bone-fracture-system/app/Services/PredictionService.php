@@ -129,10 +129,11 @@ class PredictionService
     public function healing_time($fracture_size,$request= null)
     {
         if ($request){
-            $age = $this->userRepository->findUserByEmail($request->patientEmail)->age;
+            $age = $request->patientAge;
         }else{
             $age = Auth::user()->age;
         }
+        Log::info("AGE ".$age);
 
         $fracture_size_cm = $fracture_size / 10;
 

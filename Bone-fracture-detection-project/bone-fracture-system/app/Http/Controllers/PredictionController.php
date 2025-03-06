@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\emailSenderService;
 use App\Services\PatientHistoryService;
 use App\Services\PredictionService;
 use Illuminate\Http\Request;
@@ -13,11 +14,13 @@ class PredictionController extends Controller
 {
     protected $predictionService;
     protected $patientHistoryService;
+    protected $emailSenderService;
 
-    public function __construct(PredictionService $predictionService, PatientHistoryService $patientHistoryService)
+    public function __construct(PredictionService $predictionService, PatientHistoryService $patientHistoryService, EmailSenderService $emailSenderService)
     {
         $this->predictionService = $predictionService;
         $this->patientHistoryService = $patientHistoryService;
+        $this->emailSenderService = $emailSenderService;
     }
 
     public function index()
@@ -28,6 +31,7 @@ class PredictionController extends Controller
 
     public function predict(Request $request)
     {
+        Log::info($request);
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -43,6 +47,8 @@ class PredictionController extends Controller
         Log::info("current user". Auth::user()->email);
         try {
             $image = $request->file('image');
+            $isNotRegistered = filter_var($request->isNotRegistered, FILTER_VALIDATE_BOOLEAN);
+            Log::info("IS NOT REGISTERED" . $isNotRegistered);
             $classifyResponse = $this->predictionService->classification($image);
             $responseClassifyData = json_decode($classifyResponse->getContent(), true);
             if ($responseClassifyData['image_class'] == 'Non-Fractured'){
@@ -53,7 +59,14 @@ class PredictionController extends Controller
                 if ($regressionResponse->isSuccessful() && $classifyResponse->isSuccessful()){
                     if (Auth::user()->user_type == 'doctor'){
                         $healingTime = $this->predictionService->healing_time($responseRegressionData['diagonal_mm'],$request);
-                        $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id,$responseRegressionData,$healingTime);
+                        if ($isNotRegistered){
+                            Log::info("IS NOT REGISTERED");
+                            $this->emailSenderService->sendPatientResults($request,$responseClassifyData['image_class'],Auth::user()->name,$responseRegressionData,$healingTime);
+                            $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id,$responseRegressionData,$healingTime,$isNotRegistered);
+                        }else{
+                            $this->patientHistoryService->saveDiagnosis($request,$responseClassifyData['image_class'],Auth::user()->id,$responseRegressionData,$healingTime,$isNotRegistered);
+                        }
+
                     }else{
                         $healingTime = $this->predictionService->healing_time($responseRegressionData['diagonal_mm']);
                     }

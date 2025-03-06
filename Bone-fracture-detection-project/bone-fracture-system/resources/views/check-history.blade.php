@@ -185,8 +185,13 @@
             @if($patientHistory && $patientHistory->isNotEmpty())
             @foreach($patientHistory as $history)
             <tr>
+                @if($history->user)
                 <td>{{ $history->user->name }}</td>
                 <td>{{ $history->user->email }}</td>
+                @else
+                <td>{{ $history->patient_name }}</td>
+                <td>{{ $history->patient_email }}</td>
+                @endif
                 @if($history->feedback)
                 <td>{{ $history->feedback }}</td>
                 @else
@@ -199,8 +204,8 @@
                 </button>
                 <button type="button"
                         class="btn btn-outline-success download-btn"
-                        data-patient-name="{{ $history->user->name }}"
-                        data-patient-email="{{ $history->user->email }}"
+                        data-patient-name="{{ $history->user->name ?? $history->patient_name }}"
+                        data-patient-email="{{ $history->user->email ?? $history->patient_email }}"
                         data-fracture-size="{{ $history->fracture_size }}"
                         data-healing-time="{{ $history->healing_time }}"
                         data-url="{{ $history->image_url }}"

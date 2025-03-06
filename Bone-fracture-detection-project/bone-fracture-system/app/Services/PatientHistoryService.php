@@ -18,23 +18,56 @@ class PatientHistoryService
         $this->patientHistoryRepository = $patientHistoryRepository;
         $this->userRepository = $userRepository;
     }
-    public function saveDiagnosis($request,$imageClass,$doctor_id,$data,$healingTime)
+    public function saveDiagnosis($request,$imageClass,$doctor_id,$data,$healingTime,$isNotRegistered)
     {
+//        try {
+//            if ($isNotRegistered){
+//                $patientHistoryData = [
+//                    'diagnosis' => $imageClass,
+//                    'doctor_id' => $doctor_id,
+//                    'image_url' => $data['image_url'],
+//                    'fracture_size' => round($data['diagonal_mm'], 2),
+//                    'healing_time' => $healingTime,
+//                    'patient_name' => $request->patientName,
+//                    'patient_email' => $request->patientEmail
+//                ];
+//            }else{
+//                $userId = $this->userRepository->findUserByEmail($request->patientEmail)->id;
+//                $patientHistoryData = [
+//                    'user_id' =>$userId,
+//                    'diagnosis' => $imageClass,
+//                    'doctor_id' => $doctor_id,
+//                    'image_url' => $data['image_url'],
+//                    'fracture_size' => round($data['diagonal_mm'], 2),
+//                    'healing_time' => $healingTime
+//                ];
+//            }
+//
+//            return $this->patientHistoryRepository->createPatientHistory($patientHistoryData);
+//        }catch (\Exception $e){
+//            Log::info($e);
+//    }
+//    return null;
         try {
-            $userId = $this->userRepository->findUserByEmail($request->patientEmail)->id;
+            $userId = !$isNotRegistered ? $this->userRepository->findUserByEmail($request->patientEmail)->id : null;
+            Log::info("USER ID ".$userId);
             $patientHistoryData = [
-                'user_id' =>$userId,
+                'user_id' => $userId,
+                'patient_name' => $isNotRegistered ? $request->patientName : null,
+                'patient_email' => $isNotRegistered ? $request->patientEmail : null,
                 'diagnosis' => $imageClass,
                 'doctor_id' => $doctor_id,
                 'image_url' => $data['image_url'],
                 'fracture_size' => round($data['diagonal_mm'], 2),
                 'healing_time' => $healingTime
             ];
+
             return $this->patientHistoryRepository->createPatientHistory($patientHistoryData);
-        }catch (\Exception $e){
-            Log::info($e);
-    }
-    return null;
+        } catch (\Exception $e) {
+            Log::error("Error saving patient history: " . $e->getMessage());
+            return response()->json(['error' => 'Failed to save patient history'], 500);
+        }
+
     }
 
     public function getPatientHistoryFromDoctorId($doctorId)

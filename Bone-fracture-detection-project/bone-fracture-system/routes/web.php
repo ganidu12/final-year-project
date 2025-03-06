@@ -46,6 +46,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/fetch-patient-details-name', [UserController::class, 'fetchPatientDetailsWithName'])->name('fetchPatientDetailsName');
     Route::post('/logout', [LoginController::class, 'logoutUser'])->name('logout');
     Route::post('/download-pdf', [ReportController::class, 'generatePDF'])->name('download.pdf');
+    Route::get('/preview-email', function () {
+        $patientData = [
+            'diagnosis' => 'Fracture Detected',
+            'doctorName' => 'Dr. Smith',
+            'image_url' => url('http://127.0.0.1:8000/storage/temp/0kfNAnxv1t_output.jpg'), // Change this to a real image path
+            'fracture_size' => 12.5, // Example size in mm
+            'healing_time' => '6-8 weeks'
+        ];
+
+        return view('emails.patient_report', ['data' => $patientData]);
+    });
 });
 
 
