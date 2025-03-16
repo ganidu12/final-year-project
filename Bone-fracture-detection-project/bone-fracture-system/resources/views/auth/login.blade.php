@@ -114,7 +114,7 @@
                 <input type="password" id="password" class="form-control" placeholder="Password" name="password">
             </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="#" class="text-decoration-none">Forgot your password?</a>
+                <a href="/forgot-password" class="text-decoration-none">Forgot your password?</a>
             </div>
             <button type="submit" id="login-btn" class="btn btn-primary">Login</button>
         </form>

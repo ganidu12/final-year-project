@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PatientHistoryController;
@@ -28,6 +29,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register-user', [RegisterController::class, 'register'])->name('register.submit');
     Route::post('/login-user', [LoginController::class, 'login'])->name('login.submit');
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])->name('forgot-password');
+    Route::post('/send-reset-code', [ForgotPasswordController::class, 'sendResetCode'])->name('send-reset-code');
+    Route::post('/verify-reset-code', [ForgotPasswordController::class, 'verifyResetCode']);
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
 });
 
 // Authenticated routes

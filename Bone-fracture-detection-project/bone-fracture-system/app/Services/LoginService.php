@@ -35,6 +35,7 @@ class LoginService
 
     public function loginUser(array $validatedData)
     {
+        Log::info("ddcdcdcd");
         $user = $this->userRepository->findUserByEmail($validatedData['email']);
         Log::info($user);
         if (!Hash::check($validatedData['password'], $user->password)) {

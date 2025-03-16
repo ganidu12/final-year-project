@@ -62,4 +62,24 @@ class UserRepository
         return $patients;
     }
 
+    public function setResetCode($email,$code)
+    {
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            $user->update(['reset_code' => $code]);
+        }
+        return $user;
+    }
+
+    public function resetPassword($email, $newPassword)
+    {
+        $user = User::where('email',$email)->first();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User not found!']);
+        }
+
+        return $user->update(['password' => $newPassword, 'reset_code' => null]);
+    }
+
+
 }
