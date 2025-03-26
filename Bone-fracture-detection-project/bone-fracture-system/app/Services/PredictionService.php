@@ -112,13 +112,15 @@ class PredictionService
 
         if ($response->successful()) {
             $predictions = $response->json();
+            Log::info($predictions);
             $predictedClass = $predictions['predicted_class'];
-
+            Log::info("llll ".$predictedClass);
             return response()->json([
                 'message' => 'Image processed successfully',
                 'image_class' => $predictedClass,
             ]);
         } else {
+            Log::info("NOT FOUND");
             return response()->json([
                 'error' => 'Failed to get prediction',
                 'details' => $response->body(),

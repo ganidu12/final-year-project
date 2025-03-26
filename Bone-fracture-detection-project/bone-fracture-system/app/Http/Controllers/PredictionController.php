@@ -51,9 +51,7 @@ class PredictionController extends Controller
             Log::info("IS NOT REGISTERED" . $isNotRegistered);
             $classifyResponse = $this->predictionService->classification($image);
             $responseClassifyData = json_decode($classifyResponse->getContent(), true);
-            if ($responseClassifyData['image_class'] == 'Non-Fractured'){
-                return $classifyResponse;
-            }else{
+            if ($responseClassifyData['image_class'] == 'Fractured'){
                 $regressionResponse = $this->predictionService->predictRegression($image);
                 $responseRegressionData = json_decode($regressionResponse->getContent(), true);
                 if ($regressionResponse->isSuccessful() && $classifyResponse->isSuccessful()){
@@ -81,6 +79,8 @@ class PredictionController extends Controller
                     Log::error("An error occurred during classification and regression");
                     return response("An error occurred during classification and regression");
                 }
+            }else{
+                return $classifyResponse;
             }
         } catch (\Exception $e) {
             Log::error($e);

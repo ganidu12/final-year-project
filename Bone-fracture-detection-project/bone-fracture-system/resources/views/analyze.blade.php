@@ -466,7 +466,7 @@
                     document.getElementById('resultInfo').innerHTML = `
                 <strong>Diagnosis Result:</strong> ${result.image_class}
             `;
-                } else{
+                } else if (result.image_class === 'Fractured'){
                     if (result.image_url) {
                         imagePreview.innerHTML = `<img src="${result.image_url}" alt="Processed Image" class="image-preview">`;
                     }
@@ -478,6 +478,10 @@
                     if (additionalInfoRow){
                         additionalInfoRow.style.display = 'block';
                     }
+                }else{
+                    document.getElementById('resultInfo').innerHTML = `
+                <strong>Error:</strong> ${result.image_class}
+            `;
                 }
             }
         }finally {
