@@ -24,6 +24,7 @@ class PatientHistoryController extends Controller
         }else{
             $patientHistory = $this->patientHistoryService->getPatientHistoryFromUserId($user->id);
         }
+        Log::info($patientHistory);
         return view('check-history', compact('patientHistory'));
     }
 

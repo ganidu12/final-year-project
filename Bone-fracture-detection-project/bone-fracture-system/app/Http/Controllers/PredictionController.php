@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\emailSenderService;
 use App\Services\PatientHistoryService;
 use App\Services\PredictionService;
@@ -32,11 +33,20 @@ class PredictionController extends Controller
     public function predict(Request $request)
     {
         Log::info($request);
+        $isNotRegistered = filter_var($request->isNotRegistered, FILTER_VALIDATE_BOOLEAN);
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $validator->sometimes('patientEmail', 'required|email|max:255', function () {
             return Auth::user()->user_type === 'doctor';
+        });
+        $validator->after(function ($validator) use ($request, $isNotRegistered) {
+            if ($isNotRegistered) {
+                $email = $request->input('patientEmail');
+                if ($email && User::where('email', $email)->exists()) {
+                    $validator->errors()->add('patientEmail', 'This patient is already registered. Please uncheck "Patient is not registered to the system".');
+                }
+            }
         });
         if ($validator->fails()) {
             return response()->json([
@@ -44,10 +54,10 @@ class PredictionController extends Controller
                 'message' => $validator->errors()->first(),
             ], 422);
         }
+        Log::info("Validation passed");
         Log::info("current user". Auth::user()->email);
         try {
             $image = $request->file('image');
-            $isNotRegistered = filter_var($request->isNotRegistered, FILTER_VALIDATE_BOOLEAN);
             Log::info("IS NOT REGISTERED" . $isNotRegistered);
             $classifyResponse = $this->predictionService->classification($image);
             $responseClassifyData = json_decode($classifyResponse->getContent(), true);

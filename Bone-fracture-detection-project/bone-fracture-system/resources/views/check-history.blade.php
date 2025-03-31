@@ -223,10 +223,6 @@
                 </td>
             </tr>
             @endforeach
-            @else
-            <tr>
-                <td colspan="4" class="text-center">No patient history found.</td>
-            </tr>
             @endif
             </tbody>
         </table>
@@ -300,6 +296,7 @@
             pageLength: 10,
             lengthMenu: [5, 10, 25, 50],
             searching: false,
+            order: [],
             language: {
                 lengthMenu: "Show _MENU_ entries",
                 info: "Showing _START_ to _END_ of _TOTAL_ entries",

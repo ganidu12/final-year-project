@@ -79,6 +79,8 @@
     </style>
 </head>
 <body>
+<p>Hello Sir/Madam,</p>
+<p>This is your medical report.</p>
 
 <table>
     <!-- Header Section -->
@@ -116,7 +118,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            The fracture has been analyzed using BoneScope's AI-based fracture detection system.
+            The fracture has been analyzed using BoneScope's ML-based fracture detection system.
             The estimated healing time is based on standard recovery periods but may vary based on the patient’s health condition and adherence to medical guidelines.
         </td>
     </tr>
@@ -125,7 +127,7 @@
     <!-- Footer -->
     <tr>
         <td colspan="2" class="footer">
-            This report is generated based on AI-assisted medical analysis.
+            This report is generated based on ML-assisted medical analysis.
             If you have any concerns, please consult your healthcare provider.<br>
             **Not valid for medico-legal purposes**
         </td>

@@ -235,7 +235,7 @@
                     <form>
                         <!-- Upload Image Section -->
                         <div class="mb-4">
-                            <label for="uploadImage" class="form-label d-block fw-bold" style="color: #2f2c2c;">Upload Image</label>
+                            <label for="uploadImage" class="form-label d-block fw-bold" style="color: #2f2c2c;">Upload Image <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="uploadImage" accept="image/*" style="max-width: 400px; margin: 0 auto;">
                         </div>
 
@@ -275,24 +275,24 @@
                     <h5>Analyze X-ray</h5>
                     <form>
                         <div class="mb-3">
-                            <label for="uploadImage" class="form-label">Upload Image</label>
+                            <label for="uploadImage" class="form-label">Upload Image <span class="text-danger">*</span> </label>
                             <input type="file" class="form-control" id="uploadImage" accept="image/*">
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="unregisteredPatient">
                             <label class="form-check-label" for="unregisteredPatient">Patient is not registered to the system</label>
                         </div>
-                        <div class="mb-3">
-                            <label for="patientName" class="form-label">Patient Name</label>
-                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
-                        </div>
                         <div class="mb-3 position-relative">
-                            <label for="patientEmail" class="form-label">Patient Email</label>
+                            <label for="patientEmail" class="form-label">Patient Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="patientEmail" placeholder="Enter Patient Email" autocomplete="off">
                             <ul id="emailSuggestions" class="list-group position-absolute w-100" style="z-index: 100; display: none;"></ul>
                         </div>
                         <div class="mb-3">
-                            <label for="patientAge" class="form-label">Patient Age</label>
+                            <label for="patientName" class="form-label">Patient Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="patientAge" class="form-label">Patient Age <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="patientAge" placeholder="Enter Patient Age">
                         </div>
                         <button type="submit" id ="submit-btn" class="btn btn-primary w-100">Submit</button>
@@ -427,16 +427,18 @@
         if (patientEmail){
             formData.append('patientEmail', patientEmail.value);
         }
-        formData.append('patientAge', ageInput.value)
-        if (isNotRegistered.checked) {
-            formData.append('isNotRegistered', 'true');
-            formData.append('patientAge',patientAge.value)
-            formData.append('patientName',nameInput.value)
-        } else {
-            formData.append('isNotRegistered', 'false');
+        if (ageInput){
+            formData.append('patientAge', ageInput.value)
         }
-
-
+        if (isNotRegistered){
+            if (isNotRegistered.checked) {
+                formData.append('isNotRegistered', 'true');
+                formData.append('patientAge',patientAge.value)
+                formData.append('patientName',nameInput.value)
+            } else {
+                formData.append('isNotRegistered', 'false');
+            }
+        }
 
         try {
             await new Promise(resolve => setTimeout(resolve, 3000));
